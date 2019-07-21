@@ -1,8 +1,8 @@
 add_library(contact STATIC inc/contacts.cpp)
-
 add_executable(main main.cpp)
 
-# target_link_libraries(contact helper)
+link_directories(/usr/lib)
 target_link_libraries(main
     contact
+    ncurses
 )
