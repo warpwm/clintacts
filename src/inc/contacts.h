@@ -3,6 +3,7 @@
 #include <regex>
 #include <string>
 #include <vector>
+#include <yaml-cpp/yaml.h>
 
 using namespace std;
 
@@ -16,9 +17,9 @@ class contact {
         string mobile;
         string website;
         string social;
-        string birthday;
-        string misc;
     public:
+        string getName();
+        void setName();
         contact();
         void printContact();
 };
@@ -31,6 +32,7 @@ class contactList{
         void addContact(contact c); // Lets user add a new contact
         void removeContact(contact c); // Lets user remove a contact
         contact searchContact(string phrse); // Lets user search for contacts
+        contact getContact(int index); // Lets user search for contacts
         void listContacts(); // Lists all contacts
         void contactInfo(contact c);
         void printContacts(vector<contact>);
