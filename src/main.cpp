@@ -5,22 +5,18 @@
 
 #include "inc/contacts.h"
 
-void newContact(contacts& contacts){
-    contact newContact;
-    newContact.newContact();
-    contacts.addContact(newContact);
-}
-
 int main(int argc, char **argv) {
     using namespace std;
 
-    contacts contacts;
-    // newContact(contacts);
-    // newContact(contacts);
-    // newContact(contacts);
+    Contacts contacts;
     contacts.loadContacts("/home/bresilla/contacts.yaml");
-    contacts.printContacts();
+    // contacts.newContact();
+    // contacts.printContacts();
+    contacts.listContacts();
 
-    contacts.saveContacts("/home/bresilla/contacts.yaml");
+    // contacts.searchContact("lavi").printContacts();
+
+    // contacts.saveContacts("/home/bresilla/contacts.yaml");
+    contacts.getContact(2).printContact();
     return 0;
 }

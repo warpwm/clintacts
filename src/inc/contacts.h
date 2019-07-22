@@ -5,12 +5,12 @@
 #include <string>
 #include <vector>
 #include <yaml-cpp/yaml.h>
-#include <sqlite3.h>
 
 using namespace std;
 
 class contact {
     private:
+        int index;
         string name;
         string address;
         string email_personal;
@@ -19,6 +19,8 @@ class contact {
         string website;
         string social;
     public:
+        int getIndex();
+        void setIndex(int value);
         string getName();
         void setName(string value);
         string getAddress();
@@ -33,22 +35,21 @@ class contact {
         void setWebsite(string value);
         string getSocial();
         void setSocial(string value);
-
-        void newContact();
         void printContact();
+        void newContact();
 };
 
-class contacts{
+class Contacts{
     private:
         vector<contact> contactList;
-        int number;
+        static int number;
     public:
+        void newContact();
         void addContact(contact c); // Lets user add a new contact
         void removeContact(contact c); // Lets user remove a contact
-        contact searchContact(string phrse); // Lets user search for contacts
+        Contacts searchContact(string phrse); // Lets user search for contacts
         contact getContact(int index); // Lets user search for contacts
         void listContacts(); // Lists all contacts
-        void contactInfo(contact c);
         void printContacts();
         vector<contact> loadContacts(string filePath);
         void saveContacts(string filePath);

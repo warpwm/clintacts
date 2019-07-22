@@ -25,20 +25,8 @@ string userInput(string label, string errorMsg, string exp) {
     }
 }
 
-void contact::newContact(){
-    cout << "\x1B[2J\x1B[H";
-    cout << "Enter details for the new contact:" << endl;
-    name = userInput("Name: ", "Invalid format. You can only use characters.\n", "[a-zA-Z ]+");
-    address = userInput("Address: ", "Invalid format. You can only use characters and digits.\n", ".+");
-    email_personal = userInput("Email: ", "Invalid format. Email adresses must contain '@' and can only contain characters, periods and underscores.\n", "[._a-u0-9]+@[a-z.]+");
-    email_work = userInput("Email: ", "Invalid format. Email adresses must contain '@' and can only contain characters, periods and underscores.\n", "[._a-z0-9]+@[a-z.]+");
-    phone = userInput("Phone: ", "Invalid format. The format should be: 'xxxyyxxyyy'\n", "[0-9]{7,16}");
-    website = userInput("Website: ", "Invalid format. Use <https://www.website.com> format\n", "https?://[-._a-z0-9]+.[a-z]+");
-    social = userInput("Address: ", "Invalid format. You can only use characters and digits.\n", ".+");
-    cout << "Contact has been created!" << endl;
-    cout << "\x1B[2J\x1B[H";
-}
-
+int contact::getIndex(){ return index; }
+void contact::setIndex(int value) { index=value; }
 string contact::getName(){ return name; }
 void contact::setName(string value){ name=value; }
 string contact::getAddress(){ return address; }
@@ -58,6 +46,7 @@ void contact::setSocial(string value){ social=value; }
 
 void contact::printContact() {
     std::cout << "-----------------------------" << std::endl;
+    std::cout << "Index: \t\t" << red << index << reset <<std::endl;
     std::cout << "Name: \t\t" << red << name << reset <<std::endl;
     std::cout << "Address: \t" << red << address << reset << std::endl;
     std::cout << "Email: \t\t" << red << email_personal << reset << std::endl;
@@ -67,23 +56,74 @@ void contact::printContact() {
     std::cout << "-----------------------------" << std::endl;
 }
 
-void contacts::addContact(contact c){
+void contact::newContact(){
+    cout << "\x1B[2J\x1B[H";
+    cout << "Enter details for the new contact:" << endl;
+    name = userInput("Name: ", "Invalid format. You can only use characters.\n", "[a-zA-Z ]+");
+    address = userInput("Address: ", "Invalid format. You can only use characters and digits.\n", ".+");
+    email_personal = userInput("Email: ", "Invalid format. Email adresses must contain '@' and can only contain characters, periods and underscores.\n", "[._a-u0-9]+@[a-z.]+");
+    email_work = userInput("Email: ", "Invalid format. Email adresses must contain '@' and can only contain characters, periods and underscores.\n", "[._a-z0-9]+@[a-z.]+");
+    phone = userInput("Phone: ", "Invalid format. The format should be: 'xxxyyxxyyy'\n", "[0-9]{7,16}");
+    website = userInput("Website: ", "Invalid format. Use <https://www.website.com> format\n", "https?://[-._a-z0-9]+.[a-z]+");
+    social = userInput("Social: ", "Invalid format. You can only use characters and digits.\n", ".+");
+    index = 0;
+    cout << "Contact has been created!" << endl;
+    cout << "\x1B[2J\x1B[H";
+}
+
+void Contacts::addContact(contact c){
     contactList.push_back(c);
 }
 
-void contacts::removeContact(contact c){}
-contact contacts::searchContact(string phrse){}
-void contacts::listContacts(){}
-void contacts::contactInfo(contact c){}
-void contacts::printContacts(){
+void Contacts::newContact(){
+    contact newContact;
+    newContact.newContact();
+    contactList.push_back(newContact);
+    int indx = 0;
+    for (auto i : contactList) {
+        i.setIndex(indx);
+        indx++;
+    }
+}
+
+void Contacts::removeContact(contact c){
+}
+
+Contacts Contacts::searchContact(string phrse){
+	Contacts matches;
+	smatch match;
+	string tmp;
+	for (auto i : contactList) {
+        tmp = i.getName();
+        transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
+        transform(phrse.begin(), phrse.end(), phrse.begin(), ::tolower);
+		if(regex_search(tmp, match, regex(phrse))) {
+            matches.addContact(i);
+		}
+	}
+    return matches;
+}
+
+void Contacts::listContacts(){
+    cout << "\x1B[2J\x1B[H";
+    for (auto c : contactList) {
+        std::cout << red << c.getIndex() << ".  " <<reset;
+        std::cout << c.getName() << "\t";
+        std::cout << c.getEmailPersonal() << std::endl;
+    }
+}
+
+void Contacts::printContacts(){
     for (auto i : contactList) {
         i.printContact();
     }
 }
-vector<contact> contacts::loadContacts(string filePath){
+
+vector<contact> Contacts::loadContacts(string filePath){
     auto config = YAML::LoadAllFromFile(filePath);
     for (auto config : config) {
         contact contact;
+        contact.setIndex(config["Index"].as<int>());
         contact.setName(config["Name"].as<string>());
         contact.setAddress(config["Address"].as<string>());
         contact.setEmailPersonal(config["EmailPersonal"].as<string>());
@@ -92,12 +132,18 @@ vector<contact> contacts::loadContacts(string filePath){
         contact.setWebsite(config["Website"].as<string>());
         contactList.push_back(contact);
     }
+    int indx = 0;
+    for (auto i : contactList) {
+        i.setIndex(indx);
+        indx++;
+    }
     return contactList;
 }
-void contacts::saveContacts(string filePath){
+void Contacts::saveContacts(string filePath){
     YAML::Emitter out;
     for (auto i : contactList) {
         out << YAML::BeginMap;
+        out << YAML::Key << "Index" << YAML::Value << i.getIndex();
         out << YAML::Key << "Name" << YAML::Value << i.getName();
         out << YAML::Key << "Address" << YAML::Value << i.getAddress();
         out << YAML::Key << "EmailPersonal" << YAML::Value << i.getEmailPersonal();
@@ -109,6 +155,8 @@ void contacts::saveContacts(string filePath){
         fout << out.c_str();
     }
 }
-contact contacts::getContact(int index){
-    return contactList[index];
+contact Contacts::getContact(int index){
+    if (index <= contactList.size() || index > 0) {
+        return contactList[index-1];
+    }
 }
