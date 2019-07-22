@@ -12,7 +12,8 @@ class contact {
     private:
         int index;
         string name;
-        string address;
+        string group;
+        string company;
         string email_personal;
         string email_work;
         string phone;
@@ -21,10 +22,12 @@ class contact {
     public:
         int getIndex();
         void setIndex(int value);
+        string getGroup();
+        void setGroup(string value);
         string getName();
         void setName(string value);
-        string getAddress();
-        void setAddress(string value);
+        string getCompany();
+        void setCompany(string value);
         string getEmailPersonal();
         void setEmailPersonal(string value);
         string getEmailWork();
@@ -48,6 +51,7 @@ class Contacts{
         void addContact(contact c); // Lets user add a new contact
         void removeContact(contact c); // Lets user remove a contact
         Contacts searchContact(string phrse); // Lets user search for contacts
+        contact getContact(string phrse); // Lets user search for contacts
         contact getContact(int index); // Lets user search for contacts
         void listContacts(); // Lists all contacts
         void printContacts();
