@@ -24,9 +24,9 @@ class contact {
         void printContact();
 };
 
-class contactList{
+class contacts{
     private:
-        vector<contact> contacts;
+        vector<contact> contactList;
         int number;
     public:
         void addContact(contact c); // Lets user add a new contact

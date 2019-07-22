@@ -52,19 +52,21 @@ void contact::printContact() {
 }
 
 
-void contactList::addContact(contact c){
-    contacts.push_back(c);
+void contacts::addContact(contact c){
+    contactList.push_back(c);
 }
-void contactList::removeContact(contact c){}
-contact contactList::searchContact(string phrse){}
-void contactList::listContacts(){}
-void contactList::contactInfo(contact c){}
-void contactList::printContacts(vector<contact>){}
-vector<contact> contactList::loadContacts(string filePath){
+void contacts::removeContact(contact c){}
+contact contacts::searchContact(string phrse){}
+void contacts::listContacts(){}
+void contacts::contactInfo(contact c){}
+void contacts::printContacts(vector<contact>){}
+vector<contact> contacts::loadContacts(string filePath){
     YAML::Node config = YAML::LoadFile(filePath);
-    return contacts;
+    return contactList;
 }
-void contactList::saveContacts(vector<contact>, string filePath){}
-contact contactList::getContact(int index){
-    return contacts[index];
+void contacts::saveContacts(vector<contact>, string filePath){
+    YAML::Node config = YAML::LoadFile(filePath);
+}
+contact contacts::getContact(int index){
+    return contactList[index];
 }

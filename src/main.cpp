@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     //wait for keypress
     // int c = getchar();
 
-    contactList contacts;
+    contacts contacts;
     contact contact1;
     contacts.addContact(contact1);
 
