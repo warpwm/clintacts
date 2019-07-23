@@ -3,7 +3,6 @@ add_executable(main main.cpp)
 
 link_directories(/usr/lib)
 
-
 target_link_libraries(contact crypt)
 target_link_libraries(contact yaml-cpp)
 

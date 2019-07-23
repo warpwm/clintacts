@@ -48,6 +48,7 @@ class Contacts{
         vector<contact> contactList;
         static int number;
     public:
+        bool encryption = false;
         void newContact();
         void addContact(contact c); // Lets user add a new contact
         void removeContact(contact c); // Lets user remove a contact

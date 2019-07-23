@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <fstream>
 #include <string>
 #include <type_traits>
 
@@ -35,6 +37,24 @@ class cryptor : public cryptor_static_base<void>{
             }
         static const std::string& get_key() { return m_key; }
         static void set_key(const std::string& key) { m_key = key; }
+
+    void encryptFile(std::string filePath){
+        std::ifstream ifs(filePath);
+        auto fileStr =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
+        std::cout << fileStr << std::endl;
+        auto enc = cryptor::encrypt(fileStr);
+        std::ofstream fout(filePath);
+        fout << enc;
+    }
+
+    void decryptFile (std::string filePath){
+        std::ifstream ifs(filePath);
+        auto fileStr =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
+        std::cout << fileStr << std::endl;
+        auto dec = cryptor::decrypt(fileStr);
+        std::ofstream fout(filePath);
+        fout << dec;
+    }
 
     private:
         static std::string do_xor(const char* data, const std::string& key){

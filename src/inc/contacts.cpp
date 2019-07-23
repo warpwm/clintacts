@@ -124,6 +124,13 @@ void Contacts::printContacts(){
 }
 
 vector<contact> Contacts::loadContacts(string filePath){
+    if (encryption){
+        std::ifstream ifs(filePath);
+        auto fileStr =  string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
+        auto dec = cryptor::decrypt(fileStr);
+        ofstream fout(filePath);
+        fout << dec;
+    }
     auto config = YAML::LoadAllFromFile(filePath);
     for (auto config : config) {
         contact contact;
@@ -157,6 +164,13 @@ void Contacts::saveContacts(string filePath){
         ofstream fout(filePath);
         fout << out.c_str();
         index++;
+    }
+    if (encryption){
+        std::ifstream ifs(filePath);
+        auto fileStr =  string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
+        auto enc = cryptor::encrypt(fileStr);
+        ofstream fout(filePath);
+        fout << enc;
     }
 }
 
