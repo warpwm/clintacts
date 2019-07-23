@@ -11,15 +11,14 @@ int main(int argc, char **argv) {
     using namespace std;
     string filePath = "/home/bresilla/contacts";
     Contacts contacts;
+    contacts.encryption = true;
 
-    auto enc = cryptor::encryptFile(filePath);
-    // std::cout << "\n\n\n---------------\n\n\n" << enc << std::endl;
-    auto dec = cryptor::decryptFile(filePath);
-    // std::cout << "\n\n\n---------------\n\n\n" << dec << std::endl;
+    // auto enc = cryptor::encryptFile(filePath);
+    // auto dec = cryptor::decryptFile(filePath);
 
-    // contacts.loadContacts(filePath);
+    contacts.loadContacts(filePath);
     // contacts.newContact();
-    // contacts.listContacts();
+    contacts.listContacts();
     // contacts.saveContacts(filePath);
 
     // contacts.searchContact("lavi").printContacts();

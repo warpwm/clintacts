@@ -45,34 +45,37 @@ class cryptor : public cryptor_static_base<void>{
         return fileStr;
     }
 
-    static std::string encryptFile(std::string filePath){
-        std::regex rx("[^a-zA-Z0-9+/=]");
-        std::smatch match;
-        std::ifstream ifs(filePath);
-        auto fileStr =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-        if (regex_match(fileStr, match, rx)) {
-            std::cout << "\n\n\n---encoded---\n\n\n" << std::endl;
-            // auto enc = encrypt(fileStr);
-            // std::ofstream fout(filePath);
-            // fout << enc;
-            // return enc;
+    static bool isStringBase64(std::string input){
+        for (auto i : input) {
+            if (!is_base64(i)) {
+                return false;
+            }
         }
-        return fileStr;
+        return true;
+    }
+
+    static std::string encryptFile(std::string filePath){
+        std::ifstream ifs(filePath);
+        auto file = std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
+        if (!isStringBase64(file)) {
+            std::cout << "\n\n\n---encrypting---\n\n\n" << std::endl;
+            file = encrypt(file);
+            std::ofstream fout(filePath);
+            fout << file;
+        }
+        return file;
     }
 
     static std::string decryptFile (std::string filePath){
-        std::regex rx("[^a-zA-Z0-9+/=]");
-        std::smatch match;
         std::ifstream ifs(filePath);
-        auto fileStr =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-        if (regex_match(fileStr, match, rx)) {
-            std::cout << "\n\n\n---decoded---\n\n\n" << std::endl;
-            // auto dec = decrypt(fileStr);
-            // std::ofstream fout(filePath);
-            // fout << dec;
-            // return dec;
+        auto file =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
+        if (isStringBase64(file)) {
+            std::cout << "\n\n\n---decrypting---\n\n\n" << std::endl;
+            file = decrypt(file);
+            std::ofstream fout(filePath);
+            fout << file;
         }
-        return fileStr;
+        return file;
     }
 
     private:
