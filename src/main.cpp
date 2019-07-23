@@ -6,38 +6,23 @@
 #include "inc/contacts.h"
 #include "inc/crypt.hpp"
 
-void encryption(string filePath){
-    std::ifstream ifs(filePath);
-    auto fileStr =  string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-    std::cout << fileStr << std::endl;
-    auto enc = cryptor::encrypt(fileStr);
-    ofstream fout(filePath);
-    fout << enc;
-}
-
-void decryption (string filePath){
-    std::ifstream ifs(filePath);
-    auto fileStr =  string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-    std::cout << fileStr << std::endl;
-    auto dec = cryptor::decrypt(fileStr);
-    ofstream fout(filePath);
-    fout << dec;
-}
 
 int main(int argc, char **argv) {
     using namespace std;
     string filePath = "/home/bresilla/contacts";
     Contacts contacts;
 
-    // encryption(filePath);
-    // decryption(filePath);
+    auto enc = cryptor::encryptFile(filePath);
+    // std::cout << "\n\n\n---------------\n\n\n" << enc << std::endl;
+    auto dec = cryptor::decryptFile(filePath);
+    // std::cout << "\n\n\n---------------\n\n\n" << dec << std::endl;
 
-    contacts.loadContacts(filePath);
+    // contacts.loadContacts(filePath);
     // contacts.newContact();
-    contacts.listContacts();
+    // contacts.listContacts();
     // contacts.saveContacts(filePath);
 
-    contacts.searchContact("lavi").printContacts();
+    // contacts.searchContact("lavi").printContacts();
     // contacts.getContact(2).printContact();
     // contacts.getContact("fla").printContact();
     return 0;

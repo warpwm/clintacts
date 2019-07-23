@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <regex>
 #include <type_traits>
 
 template <typename dummy>
@@ -38,22 +39,40 @@ class cryptor : public cryptor_static_base<void>{
         static const std::string& get_key() { return m_key; }
         static void set_key(const std::string& key) { m_key = key; }
 
-    void encryptFile(std::string filePath){
+    static std::string originalFile(std::string filePath){
         std::ifstream ifs(filePath);
         auto fileStr =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-        std::cout << fileStr << std::endl;
-        auto enc = cryptor::encrypt(fileStr);
-        std::ofstream fout(filePath);
-        fout << enc;
+        return fileStr;
     }
 
-    void decryptFile (std::string filePath){
+    static std::string encryptFile(std::string filePath){
+        std::regex rx("[^a-zA-Z0-9+/=]");
+        std::smatch match;
         std::ifstream ifs(filePath);
         auto fileStr =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-        std::cout << fileStr << std::endl;
-        auto dec = cryptor::decrypt(fileStr);
-        std::ofstream fout(filePath);
-        fout << dec;
+        if (regex_match(fileStr, match, rx)) {
+            std::cout << "\n\n\n---encoded---\n\n\n" << std::endl;
+            // auto enc = encrypt(fileStr);
+            // std::ofstream fout(filePath);
+            // fout << enc;
+            // return enc;
+        }
+        return fileStr;
+    }
+
+    static std::string decryptFile (std::string filePath){
+        std::regex rx("[^a-zA-Z0-9+/=]");
+        std::smatch match;
+        std::ifstream ifs(filePath);
+        auto fileStr =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
+        if (regex_match(fileStr, match, rx)) {
+            std::cout << "\n\n\n---decoded---\n\n\n" << std::endl;
+            // auto dec = decrypt(fileStr);
+            // std::ofstream fout(filePath);
+            // fout << dec;
+            // return dec;
+        }
+        return fileStr;
     }
 
     private:
