@@ -25,6 +25,30 @@ string userInput(string label, string errorMsg, string exp) {
     }
 }
 
+string checkString(std::string input, std::string exp, std::string msg) {
+    smatch match;
+    regex reg(exp);
+    while(true) {
+        if (regex_match(input, match, reg)) {
+            return input;
+        } else {
+            if(input.empty()){
+                return "(none)";
+            }
+            cout << msg;
+        }
+    }
+}
+
+// void contact::setGroup(string value){ group=checkString(value, ".+", "Invalid format."); }
+// void contact::setName(string value){ name=checkString(value, "[a-zA-Z ]+", "Invalid format. You can only use characters."); }
+// void contact::setCompany(string value){ company=checkString(value, ".+", "Invalid format."); }
+// void contact::setEmailPersonal(string value){ email_personal=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'"); }
+// void contact::setEmailWork(string value){ email_work=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'"); }
+// void contact::setPhone(string value){ phone=checkString(value, "[0-9]{7,16}", "Invalid format. The format should be: 'xxxyyxxyyy'"); }
+// void contact::setWebsite(string value){ website=checkString(value, "https?://[-._a-z0-9]+.[a-z]+", "Invalid format. Use <https://www.website.com> format"); }
+// void contact::setSocial(string value){ social=checkString(value, ".+", "Invalid format."); }
+
 int contact::getIndex(){ return index; }
 void contact::setIndex(int value) { index=value; }
 string contact::getGroup(){ return group; }
@@ -45,20 +69,6 @@ string contact::getSocial(){return social;}
 void contact::setSocial(string value){ social=value; }
 
 
-
-void contact::printContact() {
-    std::cout << "-----------------------------" << std::endl;
-    std::cout << "Index: \t\t" << red << index << reset <<std::endl;
-    std::cout << "Name: \t\t" << red << name << reset <<std::endl;
-    std::cout << "Group: \t\t" << red << group << reset <<std::endl;
-    std::cout << "Company: \t" << red << company << reset << std::endl;
-    std::cout << "Email: \t\t" << red << email_personal << reset << std::endl;
-    std::cout << "Email: \t\t" << red << email_work << reset << std::endl;
-    std::cout << "Phone: \t\t" << red << phone << reset << std::endl;
-    std::cout << "Website: \t" << red << website << reset << std::endl;
-    std::cout << "-----------------------------" << std::endl;
-}
-
 void contact::newContact(){
     cout << "\x1B[2J\x1B[H";
     cout << "Enter details for the new contact:" << endl;
@@ -75,19 +85,33 @@ void contact::newContact(){
     cout << "\x1B[2J\x1B[H";
 }
 
+
+
+void contact::printContact() {
+    std::cout << "-----------------------------" << std::endl;
+    std::cout << "Index: \t\t" << red << index << reset <<std::endl;
+    std::cout << "Name: \t\t" << red << name << reset <<std::endl;
+    std::cout << "Group: \t\t" << red << group << reset <<std::endl;
+    std::cout << "Company: \t" << red << company << reset << std::endl;
+    std::cout << "Email: \t\t" << red << email_personal << reset << std::endl;
+    std::cout << "Email: \t\t" << red << email_work << reset << std::endl;
+    std::cout << "Phone: \t\t" << red << phone << reset << std::endl;
+    std::cout << "Website: \t" << red << website << reset << std::endl;
+    std::cout << "-----------------------------" << std::endl;
+}
 void Contacts::addContact(contact c){
     contactList.push_back(c);
 }
 
 void Contacts::newContact(){
-    contact newContact;
-    newContact.newContact();
-    contactList.push_back(newContact);
-    int indx = 0;
+    int indx = 1;
     for (auto i : contactList) {
-        i.setIndex(indx);
         indx++;
     }
+    contact newContact;
+    newContact.newContact();
+    newContact.setIndex(indx);
+    contactList.push_back(newContact);
 }
 
 void Contacts::removeContact(contact c){
