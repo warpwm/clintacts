@@ -32,55 +32,62 @@ string checkString(std::string input, std::string exp, std::string msg) {
         if (regex_match(input, match, reg)) {
             return input;
         } else {
-            if(input.empty()){
-                return "(none)";
-            }
-            cout << msg;
+            return "(none)";
         }
     }
 }
 
-// void contact::setGroup(string value){ group=checkString(value, ".+", "Invalid format."); }
-// void contact::setName(string value){ name=checkString(value, "[a-zA-Z ]+", "Invalid format. You can only use characters."); }
-// void contact::setCompany(string value){ company=checkString(value, ".+", "Invalid format."); }
-// void contact::setEmailPersonal(string value){ email_personal=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'"); }
-// void contact::setEmailWork(string value){ email_work=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'"); }
-// void contact::setPhone(string value){ phone=checkString(value, "[0-9]{7,16}", "Invalid format. The format should be: 'xxxyyxxyyy'"); }
-// void contact::setWebsite(string value){ website=checkString(value, "https?://[-._a-z0-9]+.[a-z]+", "Invalid format. Use <https://www.website.com> format"); }
-// void contact::setSocial(string value){ social=checkString(value, ".+", "Invalid format."); }
+void contact::setIndex(int value) { index=value; }
+void contact::setGroup(string value){ group=checkString(value, ".+", "Invalid format."); }
+void contact::setName(string value){ name=checkString(value, "[a-zA-Z ]+", "Invalid format. You can only use characters."); }
+void contact::setCompany(string value){ company=checkString(value, ".+", "Invalid format."); }
+void contact::setEmailPersonal(string value){ email_personal=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'");}
+void contact::setEmailWork(string value){ email_work=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'"); }
+void contact::setPhone(string value){ phone=checkString(value, "[0-9]{7,16}", "Invalid format. The format should be: 'xxxyyxxyyy'"); }
+void contact::setWebsite(string value){ website=checkString(value, "https?://[-._a-z0-9]+.[a-z]+", "Invalid format. Use <https://www.website.com> format"); }
+void contact::setSocial(string value){ social=checkString(value, ".+", "Invalid format."); }
 
 int contact::getIndex(){ return index; }
-void contact::setIndex(int value) { index=value; }
 string contact::getGroup(){ return group; }
-void contact::setGroup(string value){ group=value; }
 string contact::getName(){ return name; }
-void contact::setName(string value){ name=value; }
 string contact::getCompany(){ return company; }
-void contact::setCompany(string value){ company=value; }
 string contact::getEmailPersonal(){ return email_personal; }
-void contact::setEmailPersonal(string value){ email_personal=value; }
 string contact::getEmailWork(){ return email_work; }
-void contact::setEmailWork(string value){ email_work=value; }
 string contact::getPhone(){ return phone; }
-void contact::setPhone(string value){ phone=value; }
 string contact::getWebsite(){return website; }
-void contact::setWebsite(string value){ website=value; }
 string contact::getSocial(){return social;}
-void contact::setSocial(string value){ social=value; }
+
+// void contact::setGroup(string value){ group=value; }
+// void contact::setName(string value){ name=value; }
+// void contact::setCompany(string value){ company=value; }
+// void contact::setEmailPersonal(string value){ email_personal=value; }
+// void contact::setEmailWork(string value){ email_work=value; }
+// void contact::setPhone(string value){ phone=value; }
+// void contact::setWebsite(string value){ website=value; }
+// void contact::setSocial(string value){ social=value; }
 
 
 void contact::newContact(){
     cout << "\x1B[2J\x1B[H";
+    string value;
     cout << "Enter details for the new contact:" << endl;
-    name = userInput("Name: ", "Invalid format. You can only use characters.\n", "[a-zA-Z ]+");
-    group = userInput("Group: ", "Invalid format. You can only use characters and digits.\n", ".+");
-    company = userInput("Company: ", "Invalid format. You can only use characters and digits.\n", ".+");
-    email_personal = userInput("Email: ", "Invalid format. Email adresses must contain '@' and can only contain characters, periods and underscores.\n", "[._a-z0-9]+@[a-z.]+");
-    email_work = userInput("Email: ", "Invalid format. Email adresses must contain '@' and can only contain characters, periods and underscores.\n", "[._a-z0-9]+@[a-z.]+");
-    phone = userInput("Phone: ", "Invalid format. The format should be: 'xxxyyxxyyy'\n", "[0-9]{7,16}");
-    website = userInput("Website: ", "Invalid format. Use <https://www.website.com> format\n", "https?://[-._a-z0-9]+.[a-z]+");
-    social = userInput("Social: ", "Invalid format. You can only use characters and digits.\n", ".+");
-    index = 0;
+    index=0;
+    cout << namex.first << ": "; getline(cin, value);
+    name=checkString(value, "[a-zA-Z ]+", "Invalid format. You can only use characters.");
+    cout << groupx.first << ": "; getline(cin, value);
+    group=checkString(value, ".+", "Invalid format.");
+    cout << companyx.first << ": "; getline(cin, value);
+    company=checkString(value, ".+", "Invalid format.");
+    cout << email1.first  << ": "; getline(cin, value);
+    email_personal=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'");
+    cout << email2.first << ": "; getline(cin, value);
+    email_work=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'");
+    cout << phonex.first << ": "; getline(cin, value);
+    phone=checkString(value, "[0-9]{7,16}", "Invalid format. The format should be: 'xxxyyxxyyy'");
+    cout << websitex.first << ": "; getline(cin, value);
+    website=checkString(value, "https?://[-._a-z0-9]+.[a-z]+", "Invalid format. Use <https://www.website.com> format");
+    cout << socialx.first << ": "; getline(cin, value);
+    social=checkString(value, ".+", "Invalid format.");
     cout << "Contact has been created!" << endl;
     cout << "\x1B[2J\x1B[H";
 }
@@ -89,14 +96,15 @@ void contact::newContact(){
 
 void contact::printContact() {
     std::cout << "-----------------------------" << std::endl;
-    std::cout << "Index: \t\t" << red << index << reset <<std::endl;
-    std::cout << "Name: \t\t" << red << name << reset <<std::endl;
-    std::cout << "Group: \t\t" << red << group << reset <<std::endl;
-    std::cout << "Company: \t" << red << company << reset << std::endl;
-    std::cout << "Email: \t\t" << red << email_personal << reset << std::endl;
-    std::cout << "Email: \t\t" << red << email_work << reset << std::endl;
-    std::cout << "Phone: \t\t" << red << phone << reset << std::endl;
-    std::cout << "Website: \t" << red << website << reset << std::endl;
+    std::cout << indexx.first << ": \t\t" << red << index << reset <<std::endl;
+    std::cout << namex.first << ": \t\t" << red << name << reset <<std::endl;
+    std::cout << groupx.first << ": \t\t" << red << group << reset <<std::endl;
+    std::cout << companyx.first << ": \t" << red << company << reset << std::endl;
+    std::cout << email1.first << ": \t\t" << red << email_personal << reset << std::endl;
+    std::cout << email2.first << ": \t\t" << red << email_work << reset << std::endl;
+    std::cout << phonex.first << ": \t\t" << red << phone << reset << std::endl;
+    std::cout << websitex.first << ": \t" << red << website << reset << std::endl;
+    std::cout << socialx.first << ": \t" << red << social << reset << std::endl;
     std::cout << "-----------------------------" << std::endl;
 }
 
@@ -166,13 +174,13 @@ vector<contact> Contacts::loadContacts(string filePath){
     for (auto config : config) {
         contact contact;
         contact.setIndex(index);
-        contact.setName(config["Name"].as<string>());
-        contact.setGroup(config["Group"].as<string>());
-        contact.setCompany(config["Company"].as<string>());
-        contact.setEmailPersonal(config["EmailPersonal"].as<string>());
-        contact.setEmailWork(config["EmailWork"].as<string>());
-        contact.setPhone(config["Phone"].as<string>());
-        contact.setWebsite(config["Website"].as<string>());
+        contact.setName(config[contact.name_label].as<string>());
+        contact.setGroup(config[contact.group_label].as<string>());
+        contact.setCompany(config[contact.company_label].as<string>());
+        contact.setEmailPersonal(config[contact.email1_label].as<string>());
+        contact.setEmailWork(config[contact.email2_label].as<string>());
+        contact.setPhone(config[contact.phone_label].as<string>());
+        contact.setWebsite(config[contact.website_label].as<string>());
         contactList.push_back(contact);
         index++;
     }
@@ -187,14 +195,14 @@ void Contacts::saveContacts(string filePath){
     int index = 1;
     for (auto i : contactList) {
         out << YAML::BeginMap;
-        out << YAML::Key << "Index" << YAML::Value << index;
-        out << YAML::Key << "Name" << YAML::Value << i.getName();
-        out << YAML::Key << "Group" << YAML::Value << i.getGroup();
-        out << YAML::Key << "Company" << YAML::Value << i.getCompany();
-        out << YAML::Key << "EmailPersonal" << YAML::Value << i.getEmailPersonal();
-        out << YAML::Key << "EmailWork" << YAML::Value << i.getEmailWork();
-        out << YAML::Key << "Phone" << YAML::Value << i.getPhone();
-        out << YAML::Key << "Website" << YAML::Value << i.getWebsite();
+        out << YAML::Key << i.index_label << YAML::Value << index;
+        out << YAML::Key << i.name_label << YAML::Value << i.getName();
+        out << YAML::Key << i.group_label << YAML::Value << i.getGroup();
+        out << YAML::Key << i.company_label << YAML::Value << i.getCompany();
+        out << YAML::Key << i.email1_label << YAML::Value << i.getEmailPersonal();
+        out << YAML::Key << i.email2_label << YAML::Value << i.getEmailWork();
+        out << YAML::Key << i.phone_label << YAML::Value << i.getPhone();
+        out << YAML::Key << i.website_label << YAML::Value << i.getWebsite();
         out << YAML::EndMap;
         ofstream fout(filePath);
         fout << out.c_str();
