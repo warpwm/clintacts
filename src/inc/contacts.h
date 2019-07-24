@@ -63,13 +63,13 @@ class Contacts{
     public:
         bool encryption = false;
         void newContact();
-        void addContact(contact c); // Lets user add a new contact
-        void editContact(contact c); // Lets user add a new contact
-        void removeContact(contact c); // Lets user remove a contact
-        Contacts searchContact(std::string phrse); // Lets user search for contacts
-        contact getContact(std::string phrse); // Lets user search for contacts
-        contact getContact(int index); // Lets user search for contacts
-        void listContacts(); // Lists all contacts
+        void addContact(contact c);
+        void editContact(contact c);
+        void removeContact(contact c);
+        Contacts searchContact(std::string phrse);
+        contact getContact(std::string phrse);
+        contact getContact(int index);
+        void listContacts();
         void printContacts();
         std::vector<contact> loadContacts(std::string filePath);
         void saveContacts(std::string filePath);

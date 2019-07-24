@@ -12,8 +12,8 @@ int main(int argc, char **argv) {
     string filePath = "/home/bresilla/contacts";
     Contacts contacts;
 	contacts.encryption = true;
-
     contacts.loadContacts(filePath);
+
 	// contacts.newContact();
     // contacts.listContacts();
     // contacts.printContacts();
