@@ -133,11 +133,15 @@ void Contacts::removeContact(contact c){
     numerate();
 }
 
-void Contacts::editContact(contact& c){
+void Contacts::editContact(contact c){
     contact contact;
     contact.newContact();
-    contact.setIndex(c.getIndex());
-    c = contact;
+    for (int i = 0; i < contactList.size(); ++i) {
+        if (contactList[i].getIndex() == c.getIndex() && contactList[i].getName() == c.getName()) {
+            contactList[i]=contact;
+        }
+    }
+    numerate();
 }
 
 void Contacts::listContacts(){

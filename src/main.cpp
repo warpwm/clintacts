@@ -15,12 +15,12 @@ int main(int argc, char **argv) {
 
     contacts.loadContacts(filePath);
     // contacts.newContact();
-    contacts.listContacts();
-    // contacts.saveContacts(filePath);
+    // contacts.listContacts();
 
     // contacts.searchContact("lavi").printContacts();
-    contacts.removeContact(contacts.getContact(2));
+    // contacts.editContact(contacts.getContact("franc"));
     contacts.listContacts();
     // contacts.getContact("fla").printContact();
+    // contacts.saveContacts(filePath);
     return 0;
 }
