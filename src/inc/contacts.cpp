@@ -65,7 +65,7 @@ void contact::newContact(){
     name = userInput("Name: ", "Invalid format. You can only use characters.\n", "[a-zA-Z ]+");
     group = userInput("Group: ", "Invalid format. You can only use characters and digits.\n", ".+");
     company = userInput("Company: ", "Invalid format. You can only use characters and digits.\n", ".+");
-    email_personal = userInput("Email: ", "Invalid format. Email adresses must contain '@' and can only contain characters, periods and underscores.\n", "[._a-u0-9]+@[a-z.]+");
+    email_personal = userInput("Email: ", "Invalid format. Email adresses must contain '@' and can only contain characters, periods and underscores.\n", "[._a-z0-9]+@[a-z.]+");
     email_work = userInput("Email: ", "Invalid format. Email adresses must contain '@' and can only contain characters, periods and underscores.\n", "[._a-z0-9]+@[a-z.]+");
     phone = userInput("Phone: ", "Invalid format. The format should be: 'xxxyyxxyyy'\n", "[0-9]{7,16}");
     website = userInput("Website: ", "Invalid format. Use <https://www.website.com> format\n", "https?://[-._a-z0-9]+.[a-z]+");
@@ -126,9 +126,10 @@ void Contacts::printContacts(){
 vector<contact> Contacts::loadContacts(string filePath){
     cryptor::decryptFile(filePath);
     auto config = YAML::LoadAllFromFile(filePath);
+    int index = 1;
     for (auto config : config) {
         contact contact;
-        contact.setIndex(config["Index"].as<int>());
+        contact.setIndex(index);
         contact.setName(config["Name"].as<string>());
         contact.setGroup(config["Group"].as<string>());
         contact.setCompany(config["Company"].as<string>());
@@ -137,6 +138,7 @@ vector<contact> Contacts::loadContacts(string filePath){
         contact.setPhone(config["Phone"].as<string>());
         contact.setWebsite(config["Website"].as<string>());
         contactList.push_back(contact);
+        index++;
     }
     if (encryption){
         cryptor::encryptFile(filePath);

@@ -58,7 +58,6 @@ class cryptor : public cryptor_static_base<void>{
         std::ifstream ifs(filePath);
         auto file = std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
         if (!isStringBase64(file)) {
-            std::cout << "\n\n\n---encrypting---\n\n\n" << std::endl;
             file = encrypt(file);
             std::ofstream fout(filePath);
             fout << file;
@@ -70,7 +69,6 @@ class cryptor : public cryptor_static_base<void>{
         std::ifstream ifs(filePath);
         auto file =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
         if (isStringBase64(file)) {
-            std::cout << "\n\n\n---decrypting---\n\n\n" << std::endl;
             file = decrypt(file);
             std::ofstream fout(filePath);
             fout << file;

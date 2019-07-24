@@ -13,13 +13,10 @@ int main(int argc, char **argv) {
     Contacts contacts;
     contacts.encryption = true;
 
-    // auto enc = cryptor::encryptFile(filePath);
-    // auto dec = cryptor::decryptFile(filePath);
-
     contacts.loadContacts(filePath);
     // contacts.newContact();
     contacts.listContacts();
-    // contacts.saveContacts(filePath);
+    contacts.saveContacts(filePath);
 
     // contacts.searchContact("lavi").printContacts();
     // contacts.getContact(2).printContact();
