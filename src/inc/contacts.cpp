@@ -133,22 +133,11 @@ void Contacts::removeContact(contact c){
     numerate();
 }
 
-void Contacts::editContact(contact c){
-}
-
-Contacts Contacts::searchContact(string phrse){
-    Contacts matches;
-    smatch match;
-    string tmp;
-    for (auto i : contactList) {
-        tmp = i.getName();
-        transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
-        transform(phrse.begin(), phrse.end(), phrse.begin(), ::tolower);
-        if(regex_search(tmp, match, regex(phrse))) {
-            matches.addContact(i);
-        }
-    }
-    return matches;
+void Contacts::editContact(contact& c){
+    contact contact;
+    contact.newContact();
+    contact.setIndex(c.getIndex());
+    c = contact;
 }
 
 void Contacts::listContacts(){
@@ -225,6 +214,21 @@ contact Contacts::getContact(string phrse){
         }
     }
     return contact;
+}
+
+Contacts Contacts::searchContact(string phrse){
+    Contacts matches;
+    smatch match;
+    string tmp;
+    for (auto i : contactList) {
+        tmp = i.getName();
+        transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
+        transform(phrse.begin(), phrse.end(), phrse.begin(), ::tolower);
+        if(regex_search(tmp, match, regex(phrse))) {
+            matches.addContact(i);
+        }
+    }
+    return matches;
 }
 
 contact Contacts::getContact(int index){
