@@ -47,7 +47,7 @@ class cryptor : public cryptor_static_base<void>{
 
     static bool isStringBase64(std::string input){
         for (auto i : input) {
-            if (!is_base64(i)) {
+            if (i == '-') {
                 return false;
             }
         }
