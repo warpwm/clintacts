@@ -16,9 +16,9 @@ int main(int argc, char **argv) {
     contacts.loadContacts(filePath);
 	// contacts.newContact();
     // contacts.listContacts();
-    contacts.printContacts();
+    // contacts.printContacts();
+	// contacts.removeContact(contacts.getContact(10));
 
-	contacts.removeContact(contacts.getContact(10));
     contacts.listContacts();
     contacts.saveContacts(filePath);
     return 0;

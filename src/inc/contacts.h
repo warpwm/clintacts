@@ -13,63 +13,44 @@ using namespace std;
 class contact {
     private:
         map<std::string, std::string> container;
-        int index;
-        string name;
-        string group;
-        string company;
-        string email_personal;
-        string email_work;
-        string phone;
-        string website;
-        string social;
-
-    public:
-        pair<string, int> indexx = make_pair("Index", 0);
-        pair<string, string> namex = make_pair("Name", "(none)");
-        pair<string, string> groupx = make_pair("Group", "(none)");
-        pair<string, string> companyx= make_pair("Company", "(none)");
+        pair<string, int> index = make_pair("Index", 0);
+        pair<string, string> name = make_pair("Name", "(none)");
+        pair<string, string> group = make_pair("Group", "(none)");
+        pair<string, string> company= make_pair("Company", "(none)");
         pair<string, string> email1 = make_pair("EmailPersonal", "(none)");
         pair<string, string> email2 = make_pair("EmailWork", "(none)");
-        pair<string, string> phonex = make_pair("Phone", "(none)");
-        pair<string, string> websitex = make_pair("Website", "(none)");
-        pair<string, string> socialx = make_pair("Social", "(none)");
+        pair<string, string> phone = make_pair("Phone", "(none)");
+        pair<string, string> website = make_pair("Website", "(none)");
+        pair<string, string> social = make_pair("Social", "(none)");
 
-        string index_label = "Index";
-        string name_label = "Name";
-        string group_label = "Group";
-        string company_label = "Company";
-        string email1_label = "EmailPersonal";
-        string email2_label = "EmailWork";
-        string phone_label = "Phone";
-        string website_label = "Website";
-        string social_label = "Social";
-
-        int getIndex();
+    public:
         void setIndex(int value);
-
-        string getGroup();
+        int getIndex(){ return index.second; }
+        string getIndexLabel(){ return index.first; }
         void setGroup(string value);
-
-        string getName();
+        string getGroup(){ return group.second; }
+        string getGroupLabel(){ return group.first; }
         void setName(string value);
-
-        string getCompany();
+        string getName(){ return name.second; }
+        string getNameLabel(){ return name.first; }
         void setCompany(string value);
-
-        string getEmailPersonal();
+        string getCompany(){ return company.second; }
+        string getCompanyLabel(){ return company.first; }
         void setEmailPersonal(string value);
-
-        string getEmailWork();
+        string getEmailPersonal(){ return email1.second; }
+        string getEmailPersonalLabel(){ return email1.first; }
         void setEmailWork(string value);
-
-        string getPhone();
+        string getEmailWork(){ return email2.second; }
+        string getEmailWorkLabel(){ return email2.first; }
         void setPhone(string value);
-
-        string getWebsite();
+        string getPhone(){ return phone.second; }
+        string getPhoneLabel(){ return phone.first; }
         void setWebsite(string value);
-
-        string getSocial();
+        string getWebsite(){return website.second; }
+        string getWebsiteLabel(){return website.first; }
         void setSocial(string value);
+        string getSocial(){return social.second;}
+        string getSocialLabel(){return social.first;}
 
         void printContact();
         void newContact();
