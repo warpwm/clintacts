@@ -99,22 +99,41 @@ void contact::printContact() {
     std::cout << "Website: \t" << red << website << reset << std::endl;
     std::cout << "-----------------------------" << std::endl;
 }
+
+int Contacts::numerate(){
+    int index = 1;
+    for (auto& i : contactList) {
+        i.setIndex(index);
+        index++;
+    }
+    return index;
+}
+
+void Contacts::newContact(){
+    // int indx = 1;
+    // for (auto i : contactList) {
+        // indx++;
+    // }
+    contact newContact;
+    newContact.newContact();
+    contactList.push_back(newContact);
+    numerate();
+}
+
 void Contacts::addContact(contact c){
     contactList.push_back(c);
 }
 
-void Contacts::newContact(){
-    int indx = 1;
-    for (auto i : contactList) {
-        indx++;
+void Contacts::removeContact(contact c){
+    for (int i = 0; i < contactList.size(); ++i) {
+        if (contactList[i].getIndex() == c.getIndex() && contactList[i].getName() == c.getName()) {
+            contactList.erase(contactList.begin() + i);
+        }
     }
-    contact newContact;
-    newContact.newContact();
-    newContact.setIndex(indx);
-    contactList.push_back(newContact);
+    numerate();
 }
 
-void Contacts::removeContact(contact c){
+void Contacts::editContact(contact c){
 }
 
 Contacts Contacts::searchContact(string phrse){
@@ -194,6 +213,7 @@ void Contacts::saveContacts(string filePath){
 }
 
 contact Contacts::getContact(string phrse){
+    contact contact;
     smatch match;
     string tmp;
     for (auto i : contactList) {
@@ -204,10 +224,20 @@ contact Contacts::getContact(string phrse){
             return i;
         }
     }
+    return contact;
 }
 
 contact Contacts::getContact(int index){
+    contact contact;
     if (index <= contactList.size() || index > 0) {
         return contactList[index-1];
     }
+    return contact;
+}
+
+bool Contacts::isValidContact(contact c){
+    if (c.getName().empty() || c.getIndex()==0) {
+        return false;
+    }
+    return true;
 }

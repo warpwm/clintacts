@@ -51,6 +51,7 @@ class Contacts{
         bool encryption = false;
         void newContact();
         void addContact(contact c); // Lets user add a new contact
+        void editContact(contact c); // Lets user add a new contact
         void removeContact(contact c); // Lets user remove a contact
         Contacts searchContact(string phrse); // Lets user search for contacts
         contact getContact(string phrse); // Lets user search for contacts
@@ -59,4 +60,6 @@ class Contacts{
         void printContacts();
         vector<contact> loadContacts(string filePath);
         void saveContacts(string filePath);
+        int numerate();
+        bool isValidContact(contact c);
 };
