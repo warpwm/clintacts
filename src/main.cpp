@@ -16,10 +16,11 @@ int main(int argc, char **argv) {
 
 	// contacts.newContact();
     // contacts.listContacts();
-	contacts.printContacts();
+	// contacts.printContacts();
+	contacts.printAlt();
 	// contacts.removeContact(contacts.getContact(10));
 
     // contacts.listContacts();
-	contacts.saveContacts(filePath);
+	// contacts.saveContacts(filePath);
     return 0;
 }

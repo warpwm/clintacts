@@ -10,8 +10,6 @@
 
 class contact {
     private:
-        std::map<std::string, std::string> container;
-
         std::pair<std::string, int> index = std::make_pair("Index", 0);
         std::pair<std::string, std::string> name = std::make_pair("Name", "(none)");
         std::pair<std::string, std::string> group = std::make_pair("Group", "(none)");

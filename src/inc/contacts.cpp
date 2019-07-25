@@ -48,6 +48,7 @@ void contact::newContact(){
     std::cout << social.first << ": "; getline(std::cin, value); setSocial(value);
     std::cout << "Contact has been created!" << std::endl;
     std::cout << "\x1B[2J\x1B[H";
+    makeAMap();
 }
 
 void contact::printContact() {
