@@ -11,15 +11,15 @@ int main(int argc, char **argv) {
     using namespace std;
     string filePath = "/home/bresilla/contacts";
     Contacts contacts;
-	contacts.encryption = true;
+	// contacts.encryption = true;
     contacts.loadContacts(filePath);
 
 	// contacts.newContact();
     // contacts.listContacts();
-    // contacts.printContacts();
+	contacts.printContacts();
 	// contacts.removeContact(contacts.getContact(10));
 
-    contacts.listContacts();
-    contacts.saveContacts(filePath);
+    // contacts.listContacts();
+	contacts.saveContacts(filePath);
     return 0;
 }

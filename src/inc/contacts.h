@@ -16,8 +16,8 @@ class contact {
         std::pair<std::string, std::string> name = std::make_pair("Name", "(none)");
         std::pair<std::string, std::string> group = std::make_pair("Group", "(none)");
         std::pair<std::string, std::string> company= std::make_pair("Company", "(none)");
-        std::pair<std::string, std::string> email1 = std::make_pair("EmailPersonal", "(none)");
-        std::pair<std::string, std::string> email2 = std::make_pair("EmailWork", "(none)");
+        std::pair<std::string, std::string> email = std::make_pair("Email", "(none)");
+        std::pair<std::string, std::string> email2 = std::make_pair("Email_2", "(none)");
         std::pair<std::string, std::string> phone = std::make_pair("Phone", "(none)");
         std::pair<std::string, std::string> website = std::make_pair("Website", "(none)");
         std::pair<std::string, std::string> social = std::make_pair("Social", "(none)");
@@ -35,12 +35,12 @@ class contact {
         void setCompany(std::string value);
         std::string getCompany(){ return company.second; }
         std::string getCompanyLabel(){ return company.first; }
-        void setEmailPersonal(std::string value);
-        std::string getEmailPersonal(){ return email1.second; }
-        std::string getEmailPersonalLabel(){ return email1.first; }
-        void setEmailWork(std::string value);
-        std::string getEmailWork(){ return email2.second; }
-        std::string getEmailWorkLabel(){ return email2.first; }
+        void setEmail(std::string value);
+        std::string getEmail(){ return email.second; }
+        std::string getEmailLabel(){ return email.first; }
+        void setEmail_2(std::string value);
+        std::string getEmail_2(){ return email2.second; }
+        std::string getEmail_2Label(){ return email2.first; }
         void setPhone(std::string value);
         std::string getPhone(){ return phone.second; }
         std::string getPhoneLabel(){ return phone.first; }
