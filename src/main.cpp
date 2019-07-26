@@ -8,19 +8,19 @@
 
 
 int main(int argc, char **argv) {
-    using namespace std;
-    string filePath = "/home/bresilla/contacts";
-    Contacts contacts;
-	// contacts.encryption = true;
-    contacts.loadContacts(filePath);
-
-	// contacts.newContact();
+    // string filePath = "/home/bresilla/contacts";
+	// Contacts contacts;
+    // contacts.encryption = true;
+    // contacts.loadContacts(filePath);
+    // contacts.newContact();
     // contacts.listContacts();
-	// contacts.printContacts();
-	contacts.printAlt();
-	// contacts.removeContact(contacts.getContact(10));
-
+    // contacts.printContacts();
+    // contacts.printAlt();
+    // contacts.removeContact(contacts.getContact(10));
     // contacts.listContacts();
-	// contacts.saveContacts(filePath);
+    // contacts.saveContacts(filePath);
+    initscr();
+    refresh();
+    endwin();
     return 0;
 }
