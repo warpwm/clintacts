@@ -4,6 +4,10 @@ cmake_minimum_required(VERSION 3.5)
 include(CTest)
 enable_testing()
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
@@ -13,7 +17,7 @@ include_directories(${PROJECT_SOURCE_DIR}/thrd)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 # add_subdirectory(${PROJECT_SOURCE_DIR}/test)
-add_subdirectory(${PROJECT_SOURCE_DIR}/thrd)
+# add_subdirectory(thrd/CPPurses)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

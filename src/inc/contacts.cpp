@@ -166,21 +166,6 @@ void Contacts::saveContacts(std::string filePath){
     }
 }
 
-contact Contacts::getContact(std::string phrse){
-    contact contact;
-    std::smatch match;
-    std::string tmp;
-    for (auto i : contactList) {
-        tmp = i.getName();
-        transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
-        transform(phrse.begin(), phrse.end(), phrse.begin(), ::tolower);
-        if(regex_search(tmp, match, std::regex(phrse))) {
-            return i;
-        }
-    }
-    return contact;
-}
-
 Contacts Contacts::searchContact(std::string phrse){
     Contacts matches;
     std::smatch match;
@@ -194,6 +179,21 @@ Contacts Contacts::searchContact(std::string phrse){
         }
     }
     return matches;
+}
+
+contact Contacts::getContact(std::string phrse){
+    contact contact;
+    std::smatch match;
+    std::string tmp;
+    for (auto i : contactList) {
+        tmp = i.getName();
+        transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
+        transform(phrse.begin(), phrse.end(), phrse.begin(), ::tolower);
+        if(regex_search(tmp, match, std::regex(phrse))) {
+            return i;
+        }
+    }
+    return contact;
 }
 
 contact Contacts::getContact(int index){
