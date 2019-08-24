@@ -1,5 +1,5 @@
-#CLINTACTS
-## A simple CLI app to manage CONTACTS
+# CLIntacts
+#### A simple CLI app to manage CONTACTS
 
 ### USING:
 - Taywee/args [https://github.com/Taywee/args]
