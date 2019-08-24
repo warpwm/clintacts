@@ -99,7 +99,7 @@ void Contacts::listContacts(){
     // std::cout << "\x1B[2J\x1B[H";
     for (auto c : contactList) {
         std::cout << c.getIndex() << ".  ";
-        std::cout << c.getName() << std::endl;
+        std::cout << FOLDRED(c.getName()) << std::endl;
     }
 }
 

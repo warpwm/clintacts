@@ -3,11 +3,7 @@
 #include <vector>
 
 #include "inc/contacts.h"
-#include "inc/crypt.hpp"
 #include "inc/args.hpp"
-#include "inc/rang.hpp"
-
-#define BOLDRED(x) rang::bg::red << rang::style::bold << x << rang::style::reset << rang::fg::reset
 
 int main(int argc, char **argv) {
     // contacts.printAlt();

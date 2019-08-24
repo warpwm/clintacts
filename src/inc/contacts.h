@@ -8,6 +8,12 @@
 #include <yaml-cpp/yaml.h>
 #include "crypt.hpp"
 
+#include "rang.hpp"
+#define BOLDRED(x) rang::bg::red << rang::style::bold << x << rang::style::reset << rang::bg::reset
+#define FOLDRED(x) rang::fg::red << rang::style::bold << x << rang::style::reset << rang::fg::reset
+
+
+
 class contact {
     private:
         std::pair<std::string, int> index = std::make_pair("Index", 0);
