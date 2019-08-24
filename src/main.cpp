@@ -1,50 +1,136 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <ncurses.h>
 
 #include "inc/contacts.h"
 #include "inc/crypt.hpp"
-// #include <cppurses/cppurses.hpp>
+#include "inc/args.hpp"
+#include "inc/rang.hpp"
 
+
+std::string filePath;
+Contacts contacts;
 
 int main(int argc, char **argv) {
-    // string filePath = "/home/bresilla/contacts";
-	// Contacts contacts;
-    // contacts.encryption = true;
-    // contacts.loadContacts(filePath);
-    // contacts.newContact();
-    // contacts.listContacts();
-    // contacts.printContacts();
     // contacts.printAlt();
     // contacts.removeContact(contacts.getContact(10));
     // contacts.listContacts();
     // contacts.saveContacts(filePath);
-	WINDOW *two;
-	initscr();
-	start_color();
-	scrollok(stdscr, TRUE);
-	refresh();
 
-	int y, x;
-    getmaxyx(stdscr, y, x);
-	init_pair(1, COLOR_BLACK, COLOR_BLUE);
-	init_pair(2, COLOR_BLACK, COLOR_RED);
-	int centerx = x/2, centery = y/2;
-	int width = x-(x/8), heigh = y-(y/8);
+    args::ArgumentParser parser("CONTACTS APP");
 
-	two = newwin(heigh, width, centery-heigh/2,centerx-width/2);
-	mvwaddstr(two, 0,0,"AWINDOW\n");
-	// box(two, 0,0);
-	bkgd(COLOR_PAIR(2));
-	refresh();
-	wbkgd(two, COLOR_PAIR(1));
-	wrefresh(two);
+    //COMMANDS
+    args::Group commands(parser, "COMMANDS (only one at time)", args::Group::Validators::AtMostOne, args::Options::None);
+    args::Command add(commands, "new", "add a new contact");
 
-	//USUAL END STAFF
-	// refresh();
-	getch();
-    endwin();
-	noecho();
+    //LISTER
+    args::Command list(commands, "list", "list contacts");
+    args::Group lister(list, "ARGUMENTS (at most one)", args::Group::Validators::AtMostOne, args::Options::Required);
+    args::Flag l_detail(lister, "detail", "show detailed all", {'d', "detailed"});
+    args::ValueFlag<int> l_index(lister, "index", "show contact", {'i'});
+
+    //SEARCHER
+    args::Command search(commands, "search", "search for a contact");
+    args::Group searcher(search, "ARGUMENTS", args::Group::Validators::AtLeastOne, args::Options::Required);
+    args::Positional<std::string> s_name(searcher, "expression", "match expresion for contact");
+
+    //PIPER
+    args::Command out(commands, "out", "pipe to output");
+    args::PositionalList<std::string> p_exp(out, "expression", "match expresion for contact");
+    args::Group piper(out, "ARGUMENTS (at least one)", args::Group::Validators::AtLeastOne, args::Options::Required);
+    args::Flag p_name(piper, "name", "pipe put contact name", {'n', "name"});
+    args::Flag p_email(piper, "email", "pipe put contact email", {'e', "email"});
+    args::Flag p_work(piper, "wormail", "pipe put contact workmail", {'w', "work"});
+
+    //EDITOR
+    args::Command edit(commands, "edit", "edit contacts");
+    args::Group editor(edit, "ARGUMENTS (only one at time)", args::Group::Validators::Xor, args::Options::Required);
+    args::ValueFlag<int> e_index(editor, "index", "edit contact by index", {'i',"index"});
+    args::ValueFlag<std::string> e_name(editor, "name", "edit contact by name", {'n',"name"});
+
+    //REMOVER
+    args::Command remove(commands, "remove", "remove contacts");
+    args::Group remover(remove, "ARGUMENTS", args::Group::Validators::Xor, args::Options::Required);
+    args::ValueFlag<int> r_index(remover, "index", "delete contact by index", {'r'});
+    args::ValueFlag<std::string> r_name(remover, "name", "delete contact by name", {"d"});
+
+    //FLAGS
+    args::Group flags(parser, "FLAGS (none, multi or all)", args::Group::Validators::DontCare, args::Options::Global);
+    args::ValueFlag<std::string> getdir(flags, "path", "contacts file path", {"database"});
+    args::Flag crypt(flags, "encrypt", "encrypt the database", {'e', "crypt"});
+
+    //GLOBALHELP
+    args::Group global(parser, "GLOBAL (only one at time)", args::Group::Validators::AtMostOne, args::Options::Global);
+    args::HelpFlag help(global, "help", "show CLINTACTS help", {'h', "help"});
+    args::Flag version(global, "version", "show CLINTACTS version", {'v', "version"});
+    args::Flag about(global, "about", "show CLINTACTS about", {'a', 'i', "about", "info"});
+
+    try {
+        parser.ParseCLI(argc, argv);
+
+        contacts.encryption = crypt;
+        filePath = getdir ? args::get(getdir) : "/home/bresilla/contacts";
+        if (!std::ifstream(filePath)){
+            std::cout << rang::fg::red << "\nNOT A VALID FILEPATH\n" << rang::fg::reset << std::endl;
+            return 1;
+        }
+        contacts.loadContacts(filePath);
+
+        if (list) {
+            if (l_detail){
+                contacts.printContacts();
+            } else if (l_index) {
+                if (args::get(l_index) <= 0 || args::get(l_index)>contacts.size()) {
+                    std::cout << rang::fg::red << "\nNOT A VALID INDEX\n" << rang::fg::reset << std::endl;
+                } else {
+                    std::cout << std::endl;
+                    contacts.getContact(args::get(l_index)).printContact();
+                    std::cout << std::endl;
+                }
+            } else {
+                contacts.listContacts();
+            }
+        } else if (search) {
+            auto tempCon = contacts.getContact(args::get(s_name));
+            if (tempCon.getIndex() > 0){
+                std::cout << std::endl;
+                tempCon.printContact();
+                std::cout << std::endl;
+            } else {
+                std::cout << rang::fg::red << "\nNO CONTACTS FOUND\n" << rang::fg::reset << std::endl;
+            }
+        } else if (out) {
+        } else if (edit) {
+            contacts.saveContacts(filePath);
+        } else if (add) {
+            contacts.newContact();
+            contacts.saveContacts(filePath);
+        } else if (remove) {
+            if (r_index) {
+                auto name = contacts.getContact(args::get(r_index)).getName();
+                std::cout << "Deleting: " << name << std::endl;
+                contacts.removeContact(contacts.getContact(args::get(r_index)));
+            } else if (r_name) {
+                auto name = contacts.getContact(args::get(r_name)).getName();
+                std::cout << "Deleting: " << name << std::endl;
+                contacts.removeContact(contacts.getContact(args::get(r_name)));
+            }
+        } else {
+            if (help){
+                std::cout << parser;
+            } else if (version) {
+                std::cout << "Verion: 0.0.1" << std::endl;
+            } else {
+                std::cout << "PLEASE WRITE A COMMAND OR A FLAG/ARGUENT\nUSE --help or -h TO SHOW USAGE HELP" << std::endl;
+            }
+        }
+    }
+    catch (args::Help) {
+        std::cout << parser;
+    }
+    catch (args::Error& e) {
+        std::cerr << e.what() << std::endl << parser;
+        return 1;
+    }
     return 0;
 }

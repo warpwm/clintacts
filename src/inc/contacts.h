@@ -72,5 +72,6 @@ class Contacts{
         std::vector<contact> loadContacts(std::string filePath);
         void saveContacts(std::string filePath);
         int numerate();
+        int size(){return contactList.size();};
         bool isValidContact(contact c);
 };

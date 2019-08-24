@@ -1,12 +1,5 @@
 #include "contacts.h"
 
-const std::string red("\033[0;31m");
-const std::string green("\033[1;32m");
-const std::string yellow("\033[1;33m");
-const std::string cyan("\033[0;36m");
-const std::string magenta("\033[0;35m");
-const std::string reset("\033[0m");
-
 std::string checkString(std::string input, std::string exp, std::string msg) {
     std::smatch match;
     std::regex reg(exp);
@@ -51,18 +44,16 @@ void contact::newContact(){
 }
 
 void contact::printContact() {
-    std::cout << index.first << ": \t\t" << red << index.second << reset <<std::endl;
-    std::cout << name.first << ": \t\t" << red << name.second << reset <<std::endl;
-    std::cout << group.first << ": \t\t" << red << group.second << reset <<std::endl;
-    std::cout << company.first << ": \t" << red << company.second << reset << std::endl;
-    std::cout << email.first << ": \t\t" << red << email.second << reset << std::endl;
-    std::cout << email2.first << ": \t" << red << email2.second << reset << std::endl;
-    std::cout << phone.first << ": \t\t" << red << phone.second << reset << std::endl;
-    std::cout << website.first << ": \t" << red << website.second << reset << std::endl;
-    std::cout << social.first << ": \t" << red << social.second << reset << std::endl;
+    std::cout << index.first << ": \t\t" << index.second << std::endl;
+    std::cout << name.first << ": \t\t" << name.second << std::endl;
+    std::cout << group.first << ": \t\t" << group.second << std::endl;
+    std::cout << company.first << ": \t" << company.second << std::endl;
+    std::cout << email.first << ": \t\t" << email.second << std::endl;
+    std::cout << email2.first << ": \t" << email2.second << std::endl;
+    std::cout << phone.first << ": \t\t" << phone.second << std::endl;
+    std::cout << website.first << ": \t" << website.second << std::endl;
+    std::cout << social.first << ": \t" << social.second << std::endl;
 }
-
-
 
 int Contacts::numerate(){
     int index = 1;
@@ -105,19 +96,20 @@ void Contacts::editContact(contact c){
 }
 
 void Contacts::listContacts(){
-    std::cout << "\x1B[2J\x1B[H";
+    // std::cout << "\x1B[2J\x1B[H";
     for (auto c : contactList) {
-        std::cout << red << c.getIndex() << ".  " <<reset;
-        std::cout << c.getName() << "\t";
-        std::cout << c.getEmail() << std::endl;
+        std::cout << c.getIndex() << ".  ";
+        std::cout << c.getName() << std::endl;
     }
 }
 
 void Contacts::printContacts(){
+    if (contactList.size() < 1) { return; }
     for (auto i : contactList) {
-        std::cout << "-----------------------------" << std::endl;
+        std::cout << "\n----------------------------------------------------------\n" << std::endl;
         i.printContact();
     }
+    std::cout << "\n----------------------------------------------------------\n" << std::endl;
 }
 
 std::vector<contact> Contacts::loadContacts(std::string filePath){
