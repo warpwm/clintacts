@@ -1,4 +1,5 @@
-# A simple CMAKE template
+#CLINTACTS
+## A simple CLI app to manage CONTACTS
 
 ### USING:
 - Taywee/args [https://github.com/Taywee/args]
