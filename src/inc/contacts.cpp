@@ -40,7 +40,6 @@ void contact::newContact(){
     std::cout << website.first << ": "; getline(std::cin, value); setWebsite(value);
     std::cout << social.first << ": "; getline(std::cin, value); setSocial(value);
     std::cout << "Contact has been created!" << std::endl;
-    std::cout << "\x1B[2J\x1B[H";
 }
 
 void contact::printContact() {
@@ -64,11 +63,12 @@ int Contacts::numerate(){
     return index;
 }
 
-void Contacts::newContact(){
+contact Contacts::newContact(){
     contact newContact;
     newContact.newContact();
     contactList.push_back(newContact);
     numerate();
+    return newContact;
 }
 
 void Contacts::addContact(contact c){

@@ -60,7 +60,7 @@ class Contacts{
 
     public:
         bool encryption = false;
-        void newContact();
+        contact newContact();
         void addContact(contact c);
         void editContact(contact c);
         void removeContact(contact c);

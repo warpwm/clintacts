@@ -7,9 +7,7 @@
 #include "inc/args.hpp"
 #include "inc/rang.hpp"
 
-
-std::string filePath;
-Contacts contacts;
+#define BOLDRED(x) rang::bg::red << rang::style::bold << x << rang::style::reset << rang::fg::reset
 
 int main(int argc, char **argv) {
     // contacts.printAlt();
@@ -51,8 +49,8 @@ int main(int argc, char **argv) {
     //REMOVER
     args::Command remove(commands, "remove", "remove contacts");
     args::Group remover(remove, "ARGUMENTS", args::Group::Validators::Xor, args::Options::Required);
-    args::ValueFlag<int> r_index(remover, "index", "delete contact by index", {'r'});
-    args::ValueFlag<std::string> r_name(remover, "name", "delete contact by name", {"d"});
+    args::ValueFlag<int> r_index(remover, "index", "delete contact by index", {'i'});
+    args::ValueFlag<std::string> r_name(remover, "name", "delete contact by name", {"n"});
 
     //FLAGS
     args::Group flags(parser, "FLAGS (none, multi or all)", args::Group::Validators::DontCare, args::Options::Global);
@@ -68,10 +66,11 @@ int main(int argc, char **argv) {
     try {
         parser.ParseCLI(argc, argv);
 
+        Contacts contacts;
         contacts.encryption = crypt;
-        filePath = getdir ? args::get(getdir) : "/home/bresilla/contacts";
+        std::string filePath = getdir ? args::get(getdir) : "/home/bresilla/contacts";
         if (!std::ifstream(filePath)){
-            std::cout << rang::fg::red << "\nNOT A VALID FILEPATH\n" << rang::fg::reset << std::endl;
+            std::cout << BOLDRED("\nNOT A VALID FILEPATH\n") << std::endl;
             return 1;
         }
         contacts.loadContacts(filePath);
@@ -81,7 +80,7 @@ int main(int argc, char **argv) {
                 contacts.printContacts();
             } else if (l_index) {
                 if (args::get(l_index) <= 0 || args::get(l_index)>contacts.size()) {
-                    std::cout << rang::fg::red << "\nNOT A VALID INDEX\n" << rang::fg::reset << std::endl;
+                    std::cout << BOLDRED("\nNOT A VALID INDEX\n") << std::endl;
                 } else {
                     std::cout << std::endl;
                     contacts.getContact(args::get(l_index)).printContact();
@@ -91,29 +90,46 @@ int main(int argc, char **argv) {
                 contacts.listContacts();
             }
         } else if (search) {
-            auto tempCon = contacts.getContact(args::get(s_name));
-            if (tempCon.getIndex() > 0){
-                std::cout << std::endl;
-                tempCon.printContact();
-                std::cout << std::endl;
+            if (contacts.getContact(args::get(s_name)).getIndex() <= 0){
+                    std::cout << BOLDRED("\nNO CONTACTS FOUND\n") << std::endl;
             } else {
-                std::cout << rang::fg::red << "\nNO CONTACTS FOUND\n" << rang::fg::reset << std::endl;
+                std::cout << std::endl;
+                contacts.getContact(args::get(s_name)).printContact();
+                std::cout << std::endl;
             }
         } else if (out) {
+            for (const auto expression: args::get(p_exp)){
+                auto tempCont  = contacts.getContact(expression);
+                if (p_name) { std::cout << tempCont.getName() << "\t\t"; }
+                if (p_email) { std::cout << tempCont.getEmail() << "\t\t"; }
+                if (p_work) { std::cout << tempCont.getEmail_2() << "\t\t"; }
+                std::cout << std::endl;
+            }
         } else if (edit) {
             contacts.saveContacts(filePath);
         } else if (add) {
-            contacts.newContact();
+            auto tempCon = contacts.newContact();
+            tempCon.printContact();
             contacts.saveContacts(filePath);
         } else if (remove) {
             if (r_index) {
-                auto name = contacts.getContact(args::get(r_index)).getName();
-                std::cout << "Deleting: " << name << std::endl;
-                contacts.removeContact(contacts.getContact(args::get(r_index)));
+                if (args::get(l_index) <= 0 || args::get(l_index)>contacts.size()) {
+                    std::cout << BOLDRED("\nNOT A VALID INDEX\n") << std::endl;
+                } else {
+                    auto name = contacts.getContact(args::get(r_index)).getName();
+                    std::cout << "Deleting: " << name << std::endl;
+                    contacts.removeContact(contacts.getContact(args::get(r_index)));
+                    contacts.saveContacts(filePath);
+                }
             } else if (r_name) {
-                auto name = contacts.getContact(args::get(r_name)).getName();
-                std::cout << "Deleting: " << name << std::endl;
-                contacts.removeContact(contacts.getContact(args::get(r_name)));
+                if (contacts.getContact(args::get(r_name)).getIndex() <= 0){
+                    std::cout << BOLDRED("\nNO CONTACTS FOUND\n") << std::endl;
+                } else {
+                    auto name = contacts.getContact(args::get(r_name)).getName();
+                    std::cout << " \n Contact " << BOLDRED(name) << " deleted.\n"<<std::endl;
+                    contacts.removeContact(contacts.getContact(args::get(r_name)));
+                    contacts.saveContacts(filePath);
+                }
             }
         } else {
             if (help){

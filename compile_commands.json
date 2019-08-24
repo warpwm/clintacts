@@ -6,7 +6,7 @@
 },
 {
   "directory": "/home/bresilla/DATA/CODE/PROJECTS/WORK/CLIntacts/build/src",
-  "command": "/usr/bin/c++   -I/home/bresilla/DATA/CODE/PROJECTS/WORK/CLIntacts/src    -std=c++1z -o CMakeFiles/main.dir/main.cpp.o -c /home/bresilla/DATA/CODE/PROJECTS/WORK/CLIntacts/src/main.cpp",
+  "command": "/usr/bin/c++   -I/home/bresilla/DATA/CODE/PROJECTS/WORK/CLIntacts/src    -std=c++1z -o CMakeFiles/clintacts.dir/main.cpp.o -c /home/bresilla/DATA/CODE/PROJECTS/WORK/CLIntacts/src/main.cpp",
   "file": "/home/bresilla/DATA/CODE/PROJECTS/WORK/CLIntacts/src/main.cpp"
 }
 ]
