@@ -7,11 +7,7 @@ std::string checkString(std::string input, std::string exp, std::string msg) {
         if (regex_match(input, match, reg)) {
             return input;
         } else {
-            if (input.empty()) {
-                return "(none)";
-            } else {
-                return "(error)";
-            }
+            return "(none)";
         }
     }
 }
@@ -30,9 +26,7 @@ void contact::setAddress(std::string value){ address.second=checkString(value, "
 void contact::setSocial(std::string value){ social.second=checkString(value, ".+", "Invalid format."); }
 
 void contact::newContact(){
-    std::cout << "\x1B[2J\x1B[H";
     std::string value;
-    std::cout << "Enter details for the new contact:" << std::endl;
     index.second=0;
     std::cout << name.first << ": "; getline(std::cin, value); setName(value);
     std::cout << group.first << ": "; getline(std::cin, value); setGroup(value);
@@ -45,7 +39,6 @@ void contact::newContact(){
     std::cout << address.first << ": "; getline(std::cin, value); setAddress(value);
     std::cout << website.first << ": "; getline(std::cin, value); setWebsite(value);
     std::cout << social.first << ": "; getline(std::cin, value); setSocial(value);
-    std::cout << "Contact has been created!" << std::endl;
 }
 
 void contact::printContact() {
@@ -53,28 +46,29 @@ void contact::printContact() {
     std::cout << name.first << ": \t\t" << name.second << std::endl;
     std::cout << group.first << ": \t\t" << group.second << std::endl;
     std::cout << company.first << ": \t" << company.second << std::endl;
-    std::cout << title.first << ": \t" << title.second << std::endl;
+    std::cout << title.first << ": \t\t" << title.second << std::endl;
     std::cout << email.first << ": \t\t" << email.second << std::endl;
     std::cout << email2.first << ": \t" << email2.second << std::endl;
     std::cout << phone.first << ": \t\t" << phone.second << std::endl;
-    std::cout << phone2.first << ": \t\t" << phone2.second << std::endl;
-    std::cout << address.first << ": \t\t" << address.second << std::endl;
+    std::cout << phone2.first << ": \t" << phone2.second << std::endl;
+    std::cout << address.first << ": \t" << address.second << std::endl;
     std::cout << website.first << ": \t" << website.second << std::endl;
     std::cout << social.first << ": \t" << social.second << std::endl;
 }
-
 
 void contact::vCard(std::string dirpath){
     std::ofstream fileAddress;
     fileAddress.open(dirpath);
     fileAddress << "BEGIN:VCARD" << std::endl;
     fileAddress << "VERSION:3.0" << std::endl;
-    fileAddress << "N:" << name.second << ";" << name.second << ";;" << std::endl;
-    fileAddress << "FN:" << name.second << " " << name.second << std::endl;
+    std::istringstream ss(name.second); std::string name_, surname_; ss >> name_ >> surname_;
+    fileAddress << "N:" << name_ << ";" << surname_ << ";;" << std::endl;
+    fileAddress << "FN:" << name.second << std::endl;
     fileAddress << "ORG:" << company.second << std::endl;
-    fileAddress << "TITLE:" << "TITLE" << std::endl;
-    fileAddress << "TEL;HOME;VOICE:" << phone.second << std::endl;
-    fileAddress << "ADR;TYPE=HOME:;;" << address.second << std::endl;
+    fileAddress << "TITLE:" << title.second << std::endl;
+    fileAddress << "TEL;TYPE=home,voice;VALUE=uri:tel:" << phone.second << std::endl;
+    // auto addr = utl::split(address.second, ",");
+    // fileAddress << "ADR;TYPE=HOME;LABEL=\"" << address.second <<"\""<< ":;;" << addr[0] << ";" << addr[1] << ";" << addr[2] << ";" << addr[3] << ";" << addr[4] << std::endl;
     fileAddress << "EMAIL:" << email.second << std::endl;
     fileAddress << "END:VCARD" << std::endl;
     fileAddress.close();

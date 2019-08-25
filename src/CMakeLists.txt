@@ -1,10 +1,14 @@
 add_executable(${PROJECT_NAME} main.cpp)
-add_library(contact STATIC inc/contacts.cpp)
+
+add_library(contact STATIC ${PROJECT_SOURCE_DIR}/src/inc/contacts.cpp)
+add_library(utl INTERFACE)
+target_sources(utl INTERFACE ${PROJECT_SOURCE_DIR}/src/inc/utl/utils.hpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 link_directories(/usr/lib)
 
+# target_link_libraries(contact utl)
 target_link_libraries(contact crypt)
 target_link_libraries(contact yaml-cpp${CMAKE_STATIC_LIBRARY_SUFFIX})
 
