@@ -20,10 +20,13 @@ void contact::setIndex(int value) { index.second=value; }
 void contact::setGroup(std::string value){ group.second=checkString(value, ".+", "Invalid format."); }
 void contact::setName(std::string value){ name.second=checkString(value, "[a-zA-Z ]+", "Invalid format. You can only use characters."); }
 void contact::setCompany(std::string value){ company.second=checkString(value, ".+", "Invalid format."); }
+void contact::setTitle(std::string value){ title.second=checkString(value, "[a-zA-Z ]+", "Invalid format. You can only use characters."); }
 void contact::setEmail(std::string value){ email.second=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'");}
 void contact::setEmail_2(std::string value){ email2.second=checkString(value, "[._a-z0-9]+@[a-z.]+", "Invalid format. You can only use characters, periods, underscores and '@'"); }
 void contact::setPhone(std::string value){ phone.second=checkString(value, "[0-9]{7,16}", "Invalid format. The format should be: 'xxxyyxxyyy'"); }
+void contact::setPhone_2(std::string value){ phone2.second=checkString(value, "[0-9]{7,16}", "Invalid format. The format should be: 'xxxyyxxyyy'"); }
 void contact::setWebsite(std::string value){ website.second=checkString(value, "https?://[-._a-z0-9]+.[a-z]+", "Invalid format. Use <https://www.website.com> format"); }
+void contact::setAddress(std::string value){ address.second=checkString(value, ".+", "Invalid format."); }
 void contact::setSocial(std::string value){ social.second=checkString(value, ".+", "Invalid format."); }
 
 void contact::newContact(){
@@ -34,9 +37,12 @@ void contact::newContact(){
     std::cout << name.first << ": "; getline(std::cin, value); setName(value);
     std::cout << group.first << ": "; getline(std::cin, value); setGroup(value);
     std::cout << company.first << ": "; getline(std::cin, value); setCompany(value);
+    std::cout << title.first << ": "; getline(std::cin, value); setTitle(value);
     std::cout << email.first  << ": "; getline(std::cin, value); setEmail(value);
     std::cout << email2.first << ": "; getline(std::cin, value); setEmail_2(value);
     std::cout << phone.first << ": "; getline(std::cin, value); setPhone(value);
+    std::cout << phone2.first << ": "; getline(std::cin, value); setPhone_2(value);
+    std::cout << address.first << ": "; getline(std::cin, value); setAddress(value);
     std::cout << website.first << ": "; getline(std::cin, value); setWebsite(value);
     std::cout << social.first << ": "; getline(std::cin, value); setSocial(value);
     std::cout << "Contact has been created!" << std::endl;
@@ -47,11 +53,31 @@ void contact::printContact() {
     std::cout << name.first << ": \t\t" << name.second << std::endl;
     std::cout << group.first << ": \t\t" << group.second << std::endl;
     std::cout << company.first << ": \t" << company.second << std::endl;
+    std::cout << title.first << ": \t" << title.second << std::endl;
     std::cout << email.first << ": \t\t" << email.second << std::endl;
     std::cout << email2.first << ": \t" << email2.second << std::endl;
     std::cout << phone.first << ": \t\t" << phone.second << std::endl;
+    std::cout << phone2.first << ": \t\t" << phone2.second << std::endl;
+    std::cout << address.first << ": \t\t" << address.second << std::endl;
     std::cout << website.first << ": \t" << website.second << std::endl;
     std::cout << social.first << ": \t" << social.second << std::endl;
+}
+
+
+void contact::vCard(std::string dirpath){
+    std::ofstream fileAddress;
+    fileAddress.open(dirpath);
+    fileAddress << "BEGIN:VCARD" << std::endl;
+    fileAddress << "VERSION:3.0" << std::endl;
+    fileAddress << "N:" << name.second << ";" << name.second << ";;" << std::endl;
+    fileAddress << "FN:" << name.second << " " << name.second << std::endl;
+    fileAddress << "ORG:" << company.second << std::endl;
+    fileAddress << "TITLE:" << "TITLE" << std::endl;
+    fileAddress << "TEL;HOME;VOICE:" << phone.second << std::endl;
+    fileAddress << "ADR;TYPE=HOME:;;" << address.second << std::endl;
+    fileAddress << "EMAIL:" << email.second << std::endl;
+    fileAddress << "END:VCARD" << std::endl;
+    fileAddress.close();
 }
 
 int Contacts::numerate(){
@@ -119,13 +145,16 @@ std::vector<contact> Contacts::loadContacts(std::string filePath){
     for (auto config : config) {
         contact contact;
         contact.setIndex(index);
-        contact.setName(config[contact.getNameLabel()].as<std::string>());
-        contact.setGroup(config[contact.getGroupLabel()].as<std::string>());
-        contact.setCompany(config[contact.getCompanyLabel()].as<std::string>());
-        contact.setEmail(config[contact.getEmailLabel()].as<std::string>());
-        contact.setEmail_2(config[contact.getEmail_2Label()].as<std::string>());
-        contact.setPhone(config[contact.getPhoneLabel()].as<std::string>());
-        contact.setWebsite(config[contact.getWebsiteLabel()].as<std::string>());
+        if (config[contact.getNameLabel()]) {contact.setName(config[contact.getNameLabel()].as<std::string>());}
+        if (config[contact.getGroupLabel()]) {contact.setGroup(config[contact.getGroupLabel()].as<std::string>());}
+        if (config[contact.getCompanyLabel()]) {contact.setCompany(config[contact.getCompanyLabel()].as<std::string>());}
+        if (config[contact.getTitleLabel()]) {contact.setTitle(config[contact.getTitleLabel()].as<std::string>());}
+        if (config[contact.getEmailLabel()]) {contact.setEmail(config[contact.getEmailLabel()].as<std::string>());}
+        if (config[contact.getEmail_2Label()]) {contact.setEmail_2(config[contact.getEmail_2Label()].as<std::string>());}
+        if (config[contact.getPhoneLabel()]) {contact.setPhone(config[contact.getPhoneLabel()].as<std::string>());}
+        if (config[contact.getPhone_2Label()]) {contact.setPhone_2(config[contact.getPhone_2Label()].as<std::string>());}
+        if (config[contact.getAddressLabel()]) {contact.setAddress(config[contact.getAddressLabel()].as<std::string>());}
+        if (config[contact.getWebsiteLabel()]) {contact.setWebsite(config[contact.getWebsiteLabel()].as<std::string>());}
         contactList.push_back(contact);
         index++;
     }
@@ -144,9 +173,12 @@ void Contacts::saveContacts(std::string filePath){
         out << YAML::Key << i.getNameLabel() << YAML::Value << i.getName();
         out << YAML::Key << i.getGroupLabel() << YAML::Value << i.getGroup();
         out << YAML::Key << i.getCompanyLabel() << YAML::Value << i.getCompany();
+        out << YAML::Key << i.getTitleLabel() << YAML::Value << i.getTitle();
         out << YAML::Key << i.getEmailLabel() << YAML::Value << i.getEmail();
         out << YAML::Key << i.getEmail_2Label() << YAML::Value << i.getEmail_2();
         out << YAML::Key << i.getPhoneLabel() << YAML::Value << i.getPhone();
+        out << YAML::Key << i.getPhone_2Label() << YAML::Value << i.getPhone_2();
+        out << YAML::Key << i.getAddressLabel() << YAML::Value << i.getAddress();
         out << YAML::Key << i.getWebsiteLabel() << YAML::Value << i.getWebsite();
         out << YAML::EndMap;
         std::ofstream fout(filePath);

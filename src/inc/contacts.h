@@ -20,9 +20,12 @@ class contact {
         std::pair<std::string, std::string> name = std::make_pair("Name", "(none)");
         std::pair<std::string, std::string> group = std::make_pair("Group", "(none)");
         std::pair<std::string, std::string> company= std::make_pair("Company", "(none)");
+        std::pair<std::string, std::string> title = std::make_pair("Title", "(none)");
         std::pair<std::string, std::string> email = std::make_pair("Email", "(none)");
         std::pair<std::string, std::string> email2 = std::make_pair("Email_2", "(none)");
         std::pair<std::string, std::string> phone = std::make_pair("Phone", "(none)");
+        std::pair<std::string, std::string> phone2 = std::make_pair("Phone_2", "(none)");
+        std::pair<std::string, std::string> address = std::make_pair("Address", "(none)");
         std::pair<std::string, std::string> website = std::make_pair("Website", "(none)");
         std::pair<std::string, std::string> social = std::make_pair("Social", "(none)");
 
@@ -36,6 +39,9 @@ class contact {
         void setName(std::string value);
         std::string getName(){ return name.second; }
         std::string getNameLabel(){ return name.first; }
+        void setTitle(std::string value);
+        std::string getTitle(){ return title.second; }
+        std::string getTitleLabel(){ return title.first; }
         void setCompany(std::string value);
         std::string getCompany(){ return company.second; }
         std::string getCompanyLabel(){ return company.first; }
@@ -48,6 +54,12 @@ class contact {
         void setPhone(std::string value);
         std::string getPhone(){ return phone.second; }
         std::string getPhoneLabel(){ return phone.first; }
+        void setPhone_2(std::string value);
+        std::string getPhone_2(){ return phone2.second; }
+        std::string getPhone_2Label(){ return phone2.first; }
+        void setAddress(std::string value);
+        std::string getAddress(){ return address.second; }
+        std::string getAddressLabel(){ return address.first; }
         void setWebsite(std::string value);
         std::string getWebsite(){return website.second; }
         std::string getWebsiteLabel(){return website.first; }
@@ -56,6 +68,7 @@ class contact {
         std::string getSocialLabel(){return social.first;}
 
         void printContact();
+        void vCard(std::string dirpath);
         void newContact();
 };
 
