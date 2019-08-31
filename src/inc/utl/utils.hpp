@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-#ifndef UTILS
-#define UTILS
 namespace utl {
     // template<const std::string& S, const std::string& D, const bool& B>
     std::vector<std::string> split(const std::string& s, const std::string& delimiter, const bool& removeEmptyEntries = false){
@@ -17,5 +15,6 @@ namespace utl {
         if (!removeEmptyEntries && (s.empty() || endsWith(s, delimiter))) { tokens.push_back(""); }
         return tokens;
     }
+
+    int factorial(int number) { return number <= 1 ? number : factorial(number - 1) * number; }
 }
-#endif

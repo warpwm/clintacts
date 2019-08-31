@@ -1,19 +1,29 @@
-add_subdirectory(/usr/src/gtest
-    ${PROJECT_BINARY_DIR}/gtest
-)
-
+#######################################################################
+#                   TESTING CMAKE
+#######################################################################
 include(CTest)
-include_directories(${PROJECT_SOURCE_DIR}/src)
+include(CMakeDependentOption)
+include(${PROJECT_PATH}/thrd/doctest/scripts/cmake/doctest.cmake)
 
-#set(TEST_BINARY ${PROJECT_NAME}_test)
-#add_executable(${TEST_BINARY} test_tools.cpp)
+set(BUILD_TESTING_BCKP ${BUILD_TESTING})
+set(BUILD_TESTING OFF CACHE BOOL "Force disable of tests for external dependencies" FORCE)
+list(APPEND LCOV_REMOVE_PATTERNS "'${PROJECT_SOURCE_DIR}/thrd'") #exclude from coverage
 
-#target_link_libraries(${TEST_BINARY}
-#    tools
-#    gtest gtest_main
-#)
+# function to automatically set up testing for specific file
+function (add_testing FILE)
+    set(NAME ${PROJECT_NAME}_${FILE})
+    set(PATH ${CMAKE_CURRENT_SOURCE_DIR}/${FILE}.cpp)
+    add_executable(${NAME} ${PATH})
+    target_link_libraries(${NAME} PRIVATE doctest)
+    add_test(NAME ${NAME} COMMAND ${EXECUTABLE_OUTPUT_PATH}/${NAME})
+    if(ENABLE_COVERAGE)
+        add_coverage(${NAME})
+        add_custom_command(TARGET ${NAME} POST_BUILD COMMAND kcov ${PROJECT_BINARY_DIR}/kcov ${PROJECT_BINARY_DIR}/bin/${NAME})
+    endif()
+endfunction(add_testing)
 
-#add_test(
-#    NAME ${TEST_BINARY}
-#    COMMAND ${EXECUTABLE_OUTPUT_PATH}/${TEST_BINARY}
-#)
+
+if(BUILD_TESTS)
+    add_testing(test_one)
+    add_testing(test_two)
+endif()

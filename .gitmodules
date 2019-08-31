@@ -1,0 +1,9 @@
+[submodule "thrd/fmt"]
+	path = thrd/fmt
+	url = https://github.com/fmtlib/fmt.git
+[submodule "thrd/spdlog"]
+	path = thrd/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "thrd/doctest"]
+	path = thrd/doctest
+	url = https://github.com/onqtam/doctest.git
