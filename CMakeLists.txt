@@ -8,6 +8,7 @@ HunterGate(
     SHA1 "4189bbd869abe4eb69b5303d3f916c03d34dc154"
 )
 
+
 ###### GENERAL SETTINGS ######
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -15,117 +16,104 @@ set(PROJECT_NAME "clintacts")
 project(${PROJECT_NAME})
 if((NOT PROJECT_NAME))
   message(FATAL_ERROR "Project name must be specified!")
-else()
-    message ("\nPROJECT: ${CMAKE_PROJECT_NAME}")
 endif ((NOT PROJECT_NAME))
+message ("\nPROJECT: ${CMAKE_PROJECT_NAME}")
 
-#CPP STANDARD OPTIONS
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 ######  VARIABLES  ######
-set(${CMAKE_PROJECT_NAME}_SUMMARY               "A simple CXX contacts app")
+set(${CMAKE_PROJECT_NAME}_SUMMARY               "A simple CONTACTS for CLI app")
 set(${CMAKE_PROJECT_NAME}_VENDOR_NAME           "bresilla")
 set(${CMAKE_PROJECT_NAME}_VENDOR_CONTACT        "trim.bresilla@gmail.com")
 set(${CMAKE_PROJECT_NAME}_VERSION_MAJOR         0)
 set(${CMAKE_PROJECT_NAME}_VERSION_MINOR         1)
 set(${CMAKE_PROJECT_NAME}_VERSION_PATCH         0)
 set(PROJECT_VERSION                             "${${CMAKE_PROJECT_NAME}_VERSION_MAJOR}.${${CMAKE_PROJECT_NAME}_VERSION_MINOR}.${${CMAKE_PROJECT_NAME}_VERSION_PATCH}")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}     "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(PROJECT_PATH                               "${CMAKE_CURRENT_SOURCE_DIR}")
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}     "${PROJECT_PATH}/cmake")
-set(INCLUDE_PATH                               "${PROJECT_PATH}/src")
-set(SRC_PATH                                   "${PROJECT_PATH}/src")
-set(TEST_SRC_PATH                              "${PROJECT_PATH}/test")
-set(EXTERNAL_PATH                              "${PROJECT_PATH}/thrd")
-set(DOXYGEN_PATH                               "${PROJECT_PATH}/docs")
-set(LIB_PATH                                   "${PROJECT_BINARY_DIR}/lib")
-set(BIN_PATH                                   "${PROJECT_BINARY_DIR}/bin")
-set(TEST_PATH                                  "${PROJECT_BINARY_DIR}/test")
-set(TEST_NAME                                  "test_${PROJECT_NAME}")
-set(EXECUTABLE_OUTPUT_PATH                      ${BIN_PATH})
-set(LIBRARY_OUTPUT_PATH                         ${LIB_PATH})
-
-######  FLAGS  ######
-OPTION(BUILD_MAIN                              "Build main function"            ON)
-OPTION(BUILD_TESTS                             "Build test packages"            OFF)
-OPTION(BUILD_DOXYGEN_DOCS                      "Build Doxygen docs"             OFF)
-OPTION(BUILD_SPHINX_DOCS                       "Build Doxygen docs with Sphinx" OFF)
-OPTION(BUILD_DEPENDENCIES                      "Force build of dependencies"    OFF)
-OPTION(ENABLE_COVERAGE                         "Enable teating coverage"        ON)
-OPTION(CPPCHECK_ENABLE                         "Enable cpp checking"            ON)
+set(PROJECT_BUILD                              "${PROJECT_BINARY_DIR}")
+set(MAIN_SRC                                   "${PROJECT_PATH}/src")
+set(TEST_SRC                                   "${PROJECT_PATH}/test")
+set(THRD_SRC                                   "${PROJECT_PATH}/thrd")
+set(LIB_BUILD                                  "${PROJECT_BUILD}/lib")
+set(BIN_BUILD                                  "${PROJECT_BUILD}/bin")
+set(INCLUDE_BUILD                              "${PROJECT_BUILD}/include")
+set(DOCS_BUILD                                 "${PROJECT_BUILD}/docs")
+set(EXECUTABLE_OUTPUT_PATH                     ${BIN_BUILD})
+set(LIBRARY_OUTPUT_PATH                        ${LIB_BUILD})
 
 
 ####### BUILD TYPE #######
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Release")
-endif()
-if(${PROJECT_SOURCE_DIR} STREQUAL ${PROJECT_BINARY_DIR})
-    message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there.")
-endif()
 string(TOLOWER "${CMAKE_BUILD_TYPE}" cmake_build_type_tolower)
 if(NOT cmake_build_type_tolower STREQUAL "debug" AND
    NOT cmake_build_type_tolower STREQUAL "release" AND
-   NOT cmake_build_type_tolower STREQUAL "minsizerel" AND
-   NOT cmake_build_type_tolower STREQUAL "relwithdebinfo")
-    message(FATAL_ERROR "Unknown build type \"${CMAKE_BUILD_TYPE}\". Allowed values are Debug, Release, RelWithDebInfo, and MinSizeRel (case-insensitive).")
+   NOT cmake_build_type_tolower STREQUAL "fastdebug" AND
+   NOT cmake_build_type_tolower STREQUAL "fastrelease")
+    message(FATAL_ERROR "Unknown build type \"${CMAKE_BUILD_TYPE}\". Allowed values are Debug, Release, FastDebug, and FastRelease (case-insensitive).")
 endif()
-
-if(cmake_build_type_tolower STREQUAL "debug")
-    OPTION(DEBUGGING  "check if it's in debug mode"  ON)
-else()
-    OPTION(DEBUGGING  "check if it's in debug mode"  OFF)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
 endif()
 
 
 ####### COMPILER ######
 include(Warnings)
-if(NOT DEBUGGING)
-    message ("BUILD TYPE: ${CMAKE_BUILD_TYPE}\n")
+if((cmake_build_type_tolower STREQUAL "release") OR (cmake_build_type_tolower STREQUAL "fastrelease"))
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -Wall -Wno-unknown-pragmas -Wno-sign-compare -Woverloaded-virtual -Wwrite-strings -Wno-unused")
     set(CMAKE_CXX_FLAGS_RELEASE "-O3")
     include(LTO)
     include(Packaging)
-else()
-    message ("BUILD TYPE: ${CMAKE_BUILD_TYPE}\n")
+    option(BUILD_MAIN                              "Build main function"            ON)
+    option(BUILD_TESTS                             "Build test units"               ON)
+    if(cmake_build_type_tolower STREQUAL "release")
+        option(ENABLE_DOCUMENT                         "Enable documentation"           ON)
+    endif()
+elseif((cmake_build_type_tolower STREQUAL "debug") OR (cmake_build_type_tolower STREQUAL "fastdebug"))
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -Wall -Wno-unknown-pragmas -Wno-sign-compare -Woverloaded-virtual -Wwrite-strings -Wno-unused")
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
     set(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g3")
-    include(CTest)
-    find_package(codecov)
+    option(BUILD_MAIN                              "Build main function"            ON)
+    if(cmake_build_type_tolower STREQUAL "debug")
+        option(BUILD_TESTS                             "Build test units"               ON)
+        option(ENABLE_COVERAGE                         "Enable testing coverage"        ON)
+        option(ENABLE_DOCUMENT                         "Enable documentation"           ON)
+        option(ENABLE_MEMCHECK                         "Enable memory leak check"       ON)
+        option(ENABLE_SANITIZERS                       "Enable langtidy and cppcheck"   ON)
+    endif()
 endif()
-
-
-#SUBDIRECTORIES (they must have their own CMakeLists.txt)
-
-if(DEBUGGING)
-    enable_testing()
-    add_subdirectory(${PROJECT_SOURCE_DIR}/test)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/docs)
-endif()
+message ("BUILD TYPE: ${CMAKE_BUILD_TYPE}\n")
 add_subdirectory(${PROJECT_SOURCE_DIR}/thrd EXCLUDE_FROM_ALL)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 
 
+#CPP STANDARD OPTIONS
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-##### WIP
-if(GIT_FOUND AND EXISTS "${PROJECT_PATH}/.git")
-# Update submodules as needed
-    option(GIT_SUBMODULE "Check submodules during build" ON)
-    if(GIT_SUBMODULE)
-        message(STATUS "Submodule update")
-        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                        RESULT_VARIABLE GIT_SUBMOD_RESULT)
-        execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
-                WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                OUTPUT_VARIABLE PACKAGE_GIT_VERSION
-                ERROR_QUIET
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
-        if(NOT GIT_SUBMOD_RESULT EQUAL "0")
-            message(FATAL_ERROR "git submodule update --init failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+
+#### TESGIN ############
+if(BUILD_TESTS)
+    include(CTest)
+    enable_testing()
+    set(BUILD_TESTING_BCKP ${BUILD_TESTING})
+    set(BUILD_TESTING OFF CACHE BOOL "Force disable of tests for external dependencies" FORCE)
+    list(APPEND LCOV_REMOVE_PATTERNS "'${PROJECT_SOURCE_DIR}/thrd'") #exclude from coverage
+    # function to automatically set up testing for specific file
+    function (add_testing PATH)
+        get_filename_component(NAME ${PATH} NAME_WE)
+        set(NAME ${PROJECT_NAME}_${NAME})
+        add_executable(${NAME} ${PATH})
+        target_link_libraries(${NAME} PRIVATE doctest)
+        add_test(NAME ${NAME} COMMAND ${EXECUTABLE_OUTPUT_PATH}/${NAME})
+        if(ENABLE_COVERAGE)
+            add_custom_command(TARGET ${NAME} POST_BUILD COMMAND kcov ${PROJECT_BINARY_DIR}/cover ${PROJECT_BINARY_DIR}/bin/${NAME})
         endif()
+    endfunction(add_testing)
+    # find each test and apply testing
+    file(GLOB TEST_FILES "test/*.c" "test/*.cpp")
+    if(BUILD_TESTS)
+        foreach(A_FILE ${TEST_FILES})
+            add_testing(${A_FILE})
+        endforeach()
     endif()
 endif()
-
-
