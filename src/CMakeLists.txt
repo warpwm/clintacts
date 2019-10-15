@@ -92,6 +92,32 @@ target_link_libraries(${PROJECT_NAME}
     )
 
 
+#### TESGIN ############
+if(BUILD_TESTS)
+    include(CTest)
+    enable_testing()
+    set(BUILD_TESTING_BCKP ${BUILD_TESTING})
+    set(BUILD_TESTING OFF CACHE BOOL "Force disable of tests for external dependencies" FORCE)
+    # function to automatically set up testing for specific file
+    function (add_testing PATH)
+        get_filename_component(NAME ${PATH} NAME_WE)
+        set(NAME ${PROJECT_NAME}_${NAME})
+        add_executable(${NAME} ${PATH})
+        target_link_libraries(${NAME} PRIVATE doctest)
+        add_test(NAME ${NAME} COMMAND ${EXECUTABLE_OUTPUT_PATH}/${NAME})
+        if(ENABLE_COVERAGE)
+            add_custom_command(TARGET ${NAME} POST_BUILD COMMAND kcov --include-pattern=${MAIN_SRC} ${PROJECT_BINARY_DIR}/cover ${PROJECT_BINARY_DIR}/bin/${NAME})
+        endif()
+    endfunction(add_testing)
+    # find each test and apply testing
+    file(GLOB TEST_FILES "../test/*.c" "../test/*.cpp")
+    if(BUILD_TESTS)
+        foreach(A_FILE ${TEST_FILES})
+            add_testing(${A_FILE})
+        endforeach()
+    endif()
+endif()
+
 
 ###### CHECKING EXECUTABLE FOR MEMORY LEAK ######
 if(ENABLE_MEMCHECK)
@@ -102,7 +128,6 @@ file(MAKE_DIRECTORY "${DOCS_BUILD}")
 if(ENABLE_DOCUMENT)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND standardese --output-format=html --input.blacklist_file=CMakeLists.txt ${MAIN_SRC} WORKING_DIRECTORY ${DOCS_BUILD})
 endif()
-
 
 
 ###### INSTALL ######

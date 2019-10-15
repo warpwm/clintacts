@@ -27,7 +27,7 @@ before_install:
 
 install:
   - cd $PARENTDIR/build
-  - cmake $PARENTDIR -DCMAKE_BUILD_TYPE=Debug
+  - cmake $PARENTDIR -DCMAKE_BUILD_TYPE=FastDebug
   - make
 
 script:

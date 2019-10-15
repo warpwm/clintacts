@@ -16,3 +16,6 @@
 [submodule "thrd/rang"]
 	path = thrd/rang
 	url = https://github.com/agauniyal/rang
+[submodule "thrd/yaml-cpp"]
+	path = thrd/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp

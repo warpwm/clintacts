@@ -66,7 +66,7 @@ target_include_directories(
     args # note : will expose the parts/ folder...
 )
 
-#argument passing
+#colored output
 if(${PROJECT_PATH}/src/rang)
     execute_process(COMMAND git submodule update --init -- thrd/rang WORKING_DIRECTORY ${PROJECT_PATH})
 endif()
@@ -76,3 +76,14 @@ target_include_directories(
     INTERFACE
     rang/include # note : will expose the parts/ folder...
 )
+
+# #YAML parsing
+# if(${PROJECT_PATH}/src/yaml-cpp)
+    # execute_process(COMMAND git submodule update --init -- thrd/yaml-cpp WORKING_DIRECTORY ${PROJECT_PATH})
+# endif()
+# add_library(yaml-cpp INTERFACE)
+# target_include_directories(
+    # yaml-cpp
+    # INTERFACE
+    # yaml-cpp/include/yaml-cpp # note : will expose the parts/ folder...
+# )
