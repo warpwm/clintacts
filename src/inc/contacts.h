@@ -8,7 +8,7 @@
 #include <regex>
 #include <string>
 #include <vector>
-#include <yaml-cpp/yaml.h>
+#include "../../thrd/yaml-cpp/include/yaml-cpp/yaml.h"
 
 #define BOLDRED( x )                                              \
     rang::bg::red << rang::style::bold << x << rang::style::reset \

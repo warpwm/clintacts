@@ -54,22 +54,22 @@ class cryptor : public cryptor_static_base<void>{
         return true;
     }
 
-    static std::string encryptFile(std::string filePath){
+    static std::string encryptFile(std::string filePath, const std::string& key = m_key){
         std::ifstream ifs(filePath);
         auto file = std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
         if (!isStringBase64(file)) {
-            file = encrypt(file);
+            file = encrypt(file, key);
             std::ofstream fout(filePath);
             fout << file;
         }
         return file;
     }
 
-    static std::string decryptFile (std::string filePath){
+    static std::string decryptFile (std::string filePath, const std::string& key = m_key){
         std::ifstream ifs(filePath);
         auto file =  std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
         if (isStringBase64(file)) {
-            file = decrypt(file);
+            file = decrypt(file, key);
             std::ofstream fout(filePath);
             fout << file;
         }

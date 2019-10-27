@@ -14,75 +14,56 @@ int main( int argc, char** argv ) {
     args::ArgumentParser parser( "CONTACTS APP" );
 
     // COMMANDS
-    args::Group commands( parser, "COMMANDS (only one at time)",
-                          args::Group::Validators::AtMostOne, args::Options::None );
+    args::Group commands( parser, "COMMANDS (only one at time)", args::Group::Validators::AtMostOne, args::Options::None );
     args::Command add( commands, "new", "add a new contact" );
 
     // LISTER
     args::Command list( commands, "list", "list contacts" );
-    args::Group lister( list, "ARGUMENTS (at most one)",
-                        args::Group::Validators::AtMostOne,
-                        args::Options::Required );
+    args::Group lister( list, "ARGUMENTS (at most one)", args::Group::Validators::AtMostOne, args::Options::Required );
     args::Flag l_detail( lister, "detail", "show detailed all", { 'd', "detailed" } );
     args::ValueFlag< int > l_index( lister, "index", "show contact", { 'i' } );
 
     // SEARCHER
     args::Command search( commands, "search", "search for a contact" );
-    args::Group searcher( search, "ARGUMENTS", args::Group::Validators::AtLeastOne,
-                          args::Options::Required );
-    args::Positional< std::string > s_name( searcher, "expression",
-                                            "match expresion for contact" );
+    args::Group searcher( search, "ARGUMENTS", args::Group::Validators::AtLeastOne, args::Options::Required );
+    args::Positional< std::string > s_name( searcher, "expression", "match expresion for contact" );
 
     // PIPER
     args::Command out( commands, "out", "pipe to output" );
-    args::PositionalList< std::string > p_exp( out, "expression",
-                                               "match expresion for contact" );
-    args::Group piper( out, "ARGUMENTS (at least one)",
-                       args::Group::Validators::AtLeastOne,
-                       args::Options::Required );
+    args::PositionalList< std::string > p_exp( out, "expression", "match expresion for contact" );
+    args::Group piper( out, "ARGUMENTS (at least one)", args::Group::Validators::AtLeastOne, args::Options::Required );
     args::Flag p_name( piper, "name", "pipe put contact name", { 'n', "name" } );
     args::Flag p_email( piper, "email", "pipe put contact email", { 'e', "email" } );
-    args::Flag p_work( piper, "wormail", "pipe put contact workmail",
-                       { 'w', "work" } );
+    args::Flag p_work( piper, "wormail", "pipe put contact workmail", { 'w', "work" } );
 
     // EDITOR
     args::Command edit( commands, "edit", "edit contacts" );
-    args::Group editor( edit, "ARGUMENTS (only one at time)",
-                        args::Group::Validators::Xor, args::Options::Required );
+    args::Group editor( edit, "ARGUMENTS (only one at time)", args::Group::Validators::Xor, args::Options::Required );
     args::ValueFlag< int > e_index( editor, "index", "edit contact by index", { 'i' } );
-    args::ValueFlag< std::string > e_name( editor, "name", "edit contact by name",
-                                           { "name" } );
+    args::ValueFlag< std::string > e_name( editor, "name", "edit contact by name", { "name" } );
 
     // REMOVER
     args::Command remove( commands, "remove", "remove contacts" );
-    args::Group remover( remove, "ARGUMENTS", args::Group::Validators::Xor,
-                         args::Options::Required );
-    args::ValueFlag< int > r_index( remover, "index", "delete contact by index",
-                                    { 'i' } );
-    args::ValueFlag< std::string > r_name( remover, "name", "delete contact by name",
-                                           { "name" } );
+    args::Group remover( remove, "ARGUMENTS", args::Group::Validators::Xor, args::Options::Required );
+    args::ValueFlag< int > r_index( remover, "index", "delete contact by index", { 'i' } );
+    args::ValueFlag< std::string > r_name( remover, "name", "delete contact by name", { "name" } );
 
     // FLAGS
-    args::Group flags( parser, "FLAGS (none, multi or all)",
-                       args::Group::Validators::DontCare, args::Options::Global );
-    args::ValueFlag< std::string > getdir( flags, "path", "contacts file path",
-                                           { "database" } );
-    args::Flag crypt( flags, "encrypt", "encrypt the database", { 'e', "crypt" } );
+    args::Group flags( parser, "FLAGS (none, multi or all)", args::Group::Validators::DontCare, args::Options::Global );
+    args::ValueFlag< std::string > getdir( flags, "path", "contacts file path", { "database" } );
+    args::Flag encrypt( flags, "encrypt", "encrypt the database", { 'e', "encrypt" } );
 
     // GLOBALHELP
-    args::Group global( parser, "GLOBAL (only one at time)",
-                        args::Group::Validators::AtMostOne, args::Options::Hidden );
+    args::Group global( parser, "GLOBAL (only one at time)", args::Group::Validators::AtMostOne, args::Options::Hidden );
     args::HelpFlag help( global, "help", "show CLINTACTS help", { 'h', "help" } );
-    args::Flag version( global, "version", "show CLINTACTS version",
-                        { 'v', "version" } );
-    args::Flag about( global, "about", "show CLINTACTS about",
-                      { 'a', 'i', "about", "info" } );
+    args::Flag version( global, "version", "show CLINTACTS version", { 'v', "version" } );
+    args::Flag about( global, "about", "show CLINTACTS about", { 'a', 'i', "about", "info" } );
 
     try {
         parser.ParseCLI( argc, argv );
 
         Contacts contacts;
-        contacts.encryption = crypt;
+        contacts.encryption = encrypt;
         std::string filePath = getdir ? args::get( getdir ) : "/home/bresilla/contacts";
         if( !std::ifstream( filePath ) ) {
             std::cout << BOLDRED( "\nNOT A VALID FILEPATH\n" ) << std::endl;
