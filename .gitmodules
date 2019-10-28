@@ -1,21 +1,12 @@
-[submodule "thrd/thrd/doctest"]
-	path = thrd/thrd/doctest
-	url = https://github.com/onqtam/doctest.git
 [submodule "thrd/doctest"]
 	path = thrd/doctest
 	url = https://github.com/onqtam/doctest.git
-[submodule "thrd/fmt"]
-	path = thrd/fmt
-	url = https://github.com/fmtlib/fmt.git
-[submodule "thrd/spdlog"]
-	path = thrd/spdlog
-	url = https://github.com/gabime/spdlog.git
 [submodule "thrd/args"]
 	path = thrd/args
 	url = https://github.com/Taywee/args
-[submodule "thrd/rang"]
-	path = thrd/rang
-	url = https://github.com/agauniyal/rang
 [submodule "thrd/yaml-cpp"]
 	path = thrd/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp
+[submodule "thrd/rang"]
+	path = thrd/rang
+	url = https://github.com/agauniyal/rang

@@ -1,7 +1,5 @@
 #pragma once
-#include "../../thrd/rang/include/rang.hpp"
 #include "../sgl/crypt.hpp"
-// #include "utl/utils.hpp"
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -9,13 +7,6 @@
 #include <string>
 #include <vector>
 #include "../../thrd/yaml-cpp/include/yaml-cpp/yaml.h"
-
-#define BOLDRED( x )                                              \
-    rang::bg::red << rang::style::bold << x << rang::style::reset \
-                  << rang::bg::reset
-#define FOLDRED( x )                                              \
-    rang::fg::red << rang::style::bold << x << rang::style::reset \
-                  << rang::fg::reset
 
 class contact {
 private:

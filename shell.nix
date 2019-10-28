@@ -16,8 +16,10 @@ with import <nixpkgs> {}; rec {
                     cppcheck
                     kcov
                     valgrind
+
                     xorg.libX11
                     libyamlcpp
+                    gpgme
                   ];
     LD_LIBRARY_PATH="/run/opengl-driver/lib;${xorg.libX11}/lib/;${libGL}/lib/;${libGLU}/lib;${freeglut}/lib";
   };

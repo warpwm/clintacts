@@ -48,12 +48,9 @@ endfunction(add_filehead)
 add_filelib(${MAIN_SRC}/inc/contacts.cpp)
 target_link_libraries(contacts
     INTERFACE
-        # utl
-        rang
         crypt
     PRIVATE
-        fmt
-        yaml-cpp${CMAKE_STATIC_LIBRARY_SUFFIX}
+        yaml-cpp
         doctest
 )
 add_filehead(${MAIN_SRC}/sgl/utils.hpp)
@@ -71,7 +68,6 @@ if(BUILD_MAIN)
         PUBLIC
             contacts
             args
-            fmt::fmt-header-only
     )
 endif()
 ##############################################################################################################################################

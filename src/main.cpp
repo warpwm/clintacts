@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <gpgme.h>
 
-#include "../thrd/args/args.hxx"
+#include "sgl/args.hxx"
 #include "inc/contacts.h"
 
 int main( int argc, char** argv ) {
