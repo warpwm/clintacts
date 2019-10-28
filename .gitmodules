@@ -1,12 +1,6 @@
 [submodule "thrd/doctest"]
 	path = thrd/doctest
 	url = https://github.com/onqtam/doctest.git
-[submodule "thrd/args"]
-	path = thrd/args
-	url = https://github.com/Taywee/args
 [submodule "thrd/yaml-cpp"]
 	path = thrd/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp
-[submodule "thrd/rang"]
-	path = thrd/rang
-	url = https://github.com/agauniyal/rang
