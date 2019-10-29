@@ -1,4 +1,4 @@
-#include "contacts.h"
+#include <clintacts/contacts.h>
 
 std::string checkString( std::string input, std::string exp, std::string msg ) {
     std::smatch match;

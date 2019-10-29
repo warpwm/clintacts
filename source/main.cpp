@@ -3,8 +3,8 @@
 #include <vector>
 #include <gpgme.h>
 
-#include "sgl/args.hxx"
-#include "inc/contacts.h"
+#include <args.hpp>
+#include <clintacts/contacts.h>
 
 int main( int argc, char** argv ) {
     // contacts.printAlt();

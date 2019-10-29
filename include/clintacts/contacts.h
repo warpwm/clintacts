@@ -1,13 +1,13 @@
 #pragma once
-#include "../sgl/crypt.hpp"
-#include "../sgl/rang.hpp"
+#include <crypt.hpp>
+#include <rang.hpp>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <regex>
 #include <string>
 #include <vector>
-#include "../../thrd/yaml-cpp/include/yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 
 #define BOLDRED( x )                                              \
     rang::bg::red << rang::style::bold << x << rang::style::reset \
