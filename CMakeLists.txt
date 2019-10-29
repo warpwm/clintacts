@@ -105,8 +105,10 @@ set_target_properties(fmt PROPERTIES FOLDER "external")
 # target_compile_definitions(spdlog INTERFACE SPDLOG_FMT_EXTERNAL)
 # file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/logs")
 
-add_subdirectory(${EXT_SRC}/yaml-cpp)
+add_subdirectory(${EXT_SRC}/yaml-cpp EXCLUDE_FROM_ALL)
 include_directories(${YAML_CPP_SOURCE_DIR}/include)
+
+set(EXTERN fmt yaml-cpp)
 
 ##############################################################################################################################################
 #                   EXTERNAL
@@ -138,6 +140,10 @@ add_library(${PROJECT_NAME} ${UTIL_FILES} ${HEAD_FILES} ${CODE_FILES})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 target_include_directories(${PROJECT_NAME} PRIVATE ${INC_SRC} SYSTEM INTERFACE ${INC_SRC})
 target_include_directories(${PROJECT_NAME} PRIVATE ${UTL_SRC} SYSTEM INTERFACE ${UTL_SRC})
+target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+        ${EXTERN}
+)
 
 foreach(FILE ${CODE_FILES})
     if(ENABLE_SANITIZERS)
@@ -156,7 +162,7 @@ target_link_libraries(${PROJECT_NAME}_bin
     PRIVATE
         ${PROJECT_NAME}
     PUBLIC
-        fmt::fmt-header-only
+        ${EXTERN}
 )
 endif()
 
