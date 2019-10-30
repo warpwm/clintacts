@@ -1,4 +1,5 @@
 #include <clintacts/contacts.h>
+using namespace ftxui;
 
 std::string checkString( std::string input, std::string exp, std::string msg ) {
     std::smatch match;
@@ -63,6 +64,30 @@ void contact::newContact() {
     setSocial( value );
 }
 
+std::wstring contact::widen( const std::string& str ) {
+    std::wostringstream wstm;
+    const std::ctype< wchar_t >& ctfacet = std::use_facet< std::ctype< wchar_t > >( wstm.getloc() );
+    for( size_t i = 0; i < str.size(); ++i )
+        wstm << ctfacet.widen( str[i] );
+    return wstm.str();
+}
+
+std::string contact::narrow( const std::wstring& str ) {
+    std::ostringstream stm;
+    const std::ctype< char >& ctfacet = std::use_facet< std::ctype< char > >( stm.getloc() );
+    for( size_t i = 0; i < str.size(); ++i )
+        stm << ctfacet.narrow( str[i], 0 );
+    return stm.str();
+}
+
+void contact::newContact2() {
+    auto screen = ScreenInteractive::TerminalOutput();
+    contact contact;
+    contact.showcontact();
+    contact.on_enter = screen.ExitLoopClosure();
+    screen.Loop( &contact );
+}
+
 void contact::printContact() {
     std::cout << index.first << ": \t\t" << index.second << std::endl;
     std::cout << name.first << ": \t\t" << name.second << std::endl;
@@ -96,6 +121,11 @@ void contact::vCard( std::string dirpath ) {
     fileAddress << "EMAIL:" << email.second << std::endl;
     fileAddress << "END:VCARD" << std::endl;
     fileAddress.close();
+}
+
+void Contacts::testNew() {
+    contact newContact;
+    newContact.newContact2();
 }
 
 int Contacts::numerate() {

@@ -108,7 +108,11 @@ set_target_properties(fmt PROPERTIES FOLDER "external")
 add_subdirectory(${EXT_SRC}/yaml-cpp EXCLUDE_FROM_ALL)
 include_directories(${YAML_CPP_SOURCE_DIR}/include)
 
-set(EXTERN fmt yaml-cpp)
+add_subdirectory(${EXT_SRC}/FTXUI EXCLUDE_FROM_ALL)
+set(FTXUI screen dom component)
+include_directories(${EXT_SRC}/FTXUI/include)
+
+set(EXTERN fmt yaml-cpp ${FTXUI})
 
 ##############################################################################################################################################
 #                   EXTERNAL
@@ -219,6 +223,6 @@ endif()
 ##############################################################################################################################################
 #                   INSTALLATION
 ###############################################################################################################################################
-# install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
-# install(DIRECTORY "${LIB_BUILD}/" DESTINATION ${CMAKE_INSTALL_LIBDIR})
-# install(DIRECTORY "${INCLUDE_BUILD}/" DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS ${PROJECT_NAME}_bin DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(DIRECTORY "${LIB_BUILD}/" DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(DIRECTORY "${INC_SRC}/" DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

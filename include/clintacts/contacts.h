@@ -1,13 +1,19 @@
 #pragma once
 #include <crypt.hpp>
-#include <rang.hpp>
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <rang.hpp>
 #include <regex>
 #include <string>
 #include <vector>
 #include <yaml-cpp/yaml.h>
+
+#include "ftxui/component/container.hpp"
+#include "ftxui/component/input.hpp"
+#include "ftxui/component/menu.hpp"
+#include "ftxui/component/screen_interactive.hpp"
+#include "ftxui/screen/string.hpp"
 
 #define BOLDRED( x )                                              \
     rang::bg::red << rang::style::bold << x << rang::style::reset \
@@ -16,7 +22,9 @@
     rang::fg::red << rang::style::bold << x << rang::style::reset \
                   << rang::fg::reset
 
-class contact {
+using namespace ftxui;
+
+class contact : public Component {
 private:
     std::pair< std::string, int > index = std::make_pair( "Index", 0 );
     std::pair< std::string, std::string > name = std::make_pair( "Name", "(none)" );
@@ -72,6 +80,31 @@ public:
     void printContact();
     void vCard( std::string dirpath );
     void newContact();
+    void newContact2();
+
+    void showcontact() {
+        Add( &container );
+        container.Add( &input_1 );
+        container.Add( &input_2 );
+        container.Add( &input_3 );
+    }
+
+    Container container = Container::Vertical();
+    std::function< void() > on_enter = []() {};
+
+    Input input_1;
+    Input input_2;
+    Input input_3;
+    std::wstring widen( const std::string& str );
+    std::string narrow( const std::wstring& str );
+
+    Element Render() override {
+        return border(
+            vbox(
+                hbox( text( widen( name.first + "     " ) ), input_1.Render() ),
+                hbox( text( widen( email.first + "    " ) ), input_2.Render() ),
+                hbox( text( widen( company.first + "  " ) ), input_3.Render() ) ) );
+    }
 };
 
 class Contacts {
@@ -95,4 +128,6 @@ public:
     int numerate();
     int size() { return contactList.size(); };
     bool isValidContact( contact c );
+
+    void testNew();
 };

@@ -24,6 +24,11 @@ int main( int argc, char** argv ) {
     args::Flag l_detail( lister, "detail", "show detailed all", { 'd', "detailed" } );
     args::ValueFlag< int > l_index( lister, "index", "show contact", { 'i' } );
 
+    // TESTER
+    args::Command test( commands, "test", "testing commands" );
+    args::Group tester( test, "ARGUMENTS (at most one)", args::Group::Validators::AtMostOne, args::Options::Required );
+    args::Flag t_detail( tester, "detail", "show detailed all", { 't', "test" } );
+
     // SEARCHER
     args::Command search( commands, "search", "search for a contact" );
     args::Group searcher( search, "ARGUMENTS", args::Group::Validators::AtLeastOne, args::Options::Required );
@@ -72,7 +77,13 @@ int main( int argc, char** argv ) {
         }
         contacts.loadContacts( filePath );
 
-        if( list ) {
+        if( test ) {
+            if( t_detail ) {
+                contacts.testNew();
+            } else {
+                std::cout << "try agin" << std::endl;
+            }
+        } else if( list ) {
             if( l_detail ) {
                 contacts.printContacts();
             } else if( l_index ) {
