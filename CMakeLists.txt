@@ -156,6 +156,7 @@ endforeach()
 #                   EXECUTABLE
 ##############################################################################################################################################
 add_executable(${PROJECT_NAME}_bin ${SRC_SRC}/main.cpp)
+set_target_properties(${PROJECT_NAME}_bin PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 
 if(BUILD_MAIN)
 target_link_libraries(${PROJECT_NAME}_bin

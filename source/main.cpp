@@ -65,7 +65,7 @@ int main( int argc, char** argv ) {
 
         Contacts contacts;
         contacts.encryption = encrypt;
-        std::string filePath = getdir ? args::get( getdir ) : "/home/bresilla/contacts";
+        std::string filePath = getdir ? args::get( getdir ) : "/home/bresilla/.local/share/clintacts/contacts";
         if( !std::ifstream( filePath ) ) {
             std::cout << BOLDRED( "\nNOT A VALID FILEPATH\n" ) << std::endl;
             return 1;
