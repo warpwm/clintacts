@@ -4,6 +4,7 @@
 #include <gpgme.h>
 
 #include <args.hpp>
+#include <clintacts/contact.h>
 #include <clintacts/contacts.h>
 
 int main( int argc, char** argv ) {
