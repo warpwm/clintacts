@@ -4,6 +4,7 @@
 #include <gpgme.h>
 
 #include <args.hpp>
+#include <clintacts/contact.h>
 #include <clintacts/contacts.h>
 
 int main( int argc, char** argv ) {
@@ -23,6 +24,11 @@ int main( int argc, char** argv ) {
     args::Group lister( list, "ARGUMENTS (at most one)", args::Group::Validators::AtMostOne, args::Options::Required );
     args::Flag l_detail( lister, "detail", "show detailed all", { 'd', "detailed" } );
     args::ValueFlag< int > l_index( lister, "index", "show contact", { 'i' } );
+
+    // TESTER
+    args::Command test( commands, "test", "testing commands" );
+    args::Group tester( test, "ARGUMENTS (at most one)", args::Group::Validators::AtMostOne, args::Options::Required );
+    args::Flag t_detail( tester, "detail", "show detailed all", { 't', "test" } );
 
     // SEARCHER
     args::Command search( commands, "search", "search for a contact" );
@@ -65,14 +71,20 @@ int main( int argc, char** argv ) {
 
         Contacts contacts;
         contacts.encryption = encrypt;
-        std::string filePath = getdir ? args::get( getdir ) : "/home/bresilla/contacts";
+        std::string filePath = getdir ? args::get( getdir ) : "/home/bresilla/.local/share/clintacts/contacts";
         if( !std::ifstream( filePath ) ) {
             std::cout << BOLDRED( "\nNOT A VALID FILEPATH\n" ) << std::endl;
             return 1;
         }
         contacts.loadContacts( filePath );
 
-        if( list ) {
+        if( test ) {
+            if( t_detail ) {
+                contacts.testNew();
+            } else {
+                std::cout << "try agin" << std::endl;
+            }
+        } else if( list ) {
             if( l_detail ) {
                 contacts.printContacts();
             } else if( l_index ) {
